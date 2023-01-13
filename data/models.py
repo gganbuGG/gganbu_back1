@@ -14,3 +14,14 @@ class Match(models.Model):
 
     def __str__(self):
         return self.matchId
+
+class Combinations(models.Model):
+    units= models.JSONField(null=True)
+    traits = models.JSONField(null=True)
+    match = models.ForeignKey("Match",on_delete=models.CASCADE)
+
+class Combinations_partner(models.Model):
+
+    units= models.JSONField(null=True)
+    traits = models.JSONField(null=True)
+    match = models.ForeignKey("Match",on_delete=models.CASCADE)
