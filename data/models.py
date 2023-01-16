@@ -33,3 +33,9 @@ class Combinations_partner(models.Model):
     units= models.JSONField(null=True)
     traits = models.JSONField(null=True)
     match = models.ForeignKey("Match",on_delete=models.CASCADE)
+
+class Champion(models.Model):
+    name = models.CharField(max_length=30)
+    items = models.JSONField(null=True)
+    tier = models.JSONField(null=True)
+    rarity = models.IntegerField(null=True)
