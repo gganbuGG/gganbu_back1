@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 import requests
 import time
 from data.models import Match, Summoner_rank
+import datetime
 
 def get_API_key():
     file = open("./riot_API.txt", "r")
@@ -92,3 +93,5 @@ class Command(BaseCommand):
 
         puuids = get_puuids()
         get_matchData(puuids, API_KEY)
+        update_time = datetime.datetime.now()
+        print(update_time)

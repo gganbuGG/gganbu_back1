@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from data.models import Match,Combinations_partner,Combinations
-
+import datetime
 class Command(BaseCommand):
     help = "1등한 소환사들의 덱정보 저장"
     def handle(self, *args, **kwargs):
@@ -32,4 +32,5 @@ class Command(BaseCommand):
                     c.save()
 
 
-
+        update_time = datetime.datetime.now()
+        print(update_time)
