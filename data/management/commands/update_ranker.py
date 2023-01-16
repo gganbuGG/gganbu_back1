@@ -3,7 +3,17 @@ import requests
 from data.models import Summoner_rank
 from bs4 import BeautifulSoup
 import time
+import datetime
 
+class Summoner:
+    def __init__(self, name, tier, LP, winrate, game_num, win):
+        self.name = name
+        self.tier = tier
+        self.LP = LP
+        self.winrate = winrate
+        self.game_num = game_num
+        self.win = win
+        self.lose = int(game_num)-int(win)
 
 def get_API_key():
     file = open("./riot_API.txt", "r")
@@ -11,7 +21,7 @@ def get_API_key():
     file.close()
     return API_KEY
 
-def get_TOPsNames():
+def get_TOPs():
     url = 'https://lolchess.gg/leaderboards?mode=doubleup&region=kr'
 
     response = requests.get(url)
@@ -21,18 +31,25 @@ def get_TOPsNames():
         soup = BeautifulSoup(html, 'html.parser')
         tbody = soup.select_one('tbody')
         sNames = tbody.select('tr > td.summoner > a')
-            
-        TOPsNames = []
-        for sName in sNames:
-            TOPsNames.append(sName.get_text().strip())
+        sTiers = tbody.select('tr > td.tier > span.tier-name-sm')
+        LPs = tbody.select('tr > td.lp.active')
+        winrates = tbody.select('tr > td.winrate')
+        game_nums = tbody.select('tr > td.played')
+        wins = tbody.select('tr > td.wins')
 
-        return TOPsNames
+        TOPs = []
+
+        for i in range(len(sNames)):
+            s = Summoner(sNames[i].get_text().strip(), sTiers[i].get_text().strip(), LPs[i].get_text().strip(), winrates[i].get_text().strip(), game_nums[i].get_text().strip(), wins[i].get_text().strip(), )
+            TOPs.append(s)
+
+        return TOPs
     else :
         return response.status_code
 
-def set_rankerData(TOPsNames, API_KEY):
-    for sName in TOPsNames:
-        url = f'https://kr.api.riotgames.com/tft/summoner/v1/summoners/by-name/{sName}?api_key={API_KEY}'
+def set_rankerData(TOPs, API_KEY):
+    for top in TOPs:
+        url = f'https://kr.api.riotgames.com/tft/summoner/v1/summoners/by-name/{top.name}?api_key={API_KEY}'
 
         response = requests.get(url)
         if response.status_code == 200: # response가 정상이면 바로 맨 밑으로 이동하여 정상적으로 코드 실행
@@ -47,7 +64,7 @@ def set_rankerData(TOPsNames, API_KEY):
                 if response.status_code == 429:
                     print('try 10 second wait time')
                     time.sleep(10)
-                    url = f'https://kr.api.riotgames.com/tft/summoner/v1/summoners/by-name/{sName}?api_key={API_KEY}'
+                    url = f'https://kr.api.riotgames.com/tft/summoner/v1/summoners/by-name/{top.name}?api_key={API_KEY}'
                     response = requests.get(url)
                     print(response.status_code)
 
@@ -65,7 +82,7 @@ def set_rankerData(TOPsNames, API_KEY):
 
                     print('try 10 second wait time')
                     time.sleep(10)
-                    url = f'https://kr.api.riotgames.com/tft/summoner/v1/summoners/by-name/{sName}?api_key={API_KEY}'
+                    url = f'https://kr.api.riotgames.com/tft/summoner/v1/summoners/by-name/{top.name}?api_key={API_KEY}'
                     response = requests.get(url)
                     print(response.status_code)
 
@@ -83,8 +100,9 @@ def set_rankerData(TOPsNames, API_KEY):
         data = response.json()
         puuid = data['puuid']
         name = data['name']
+        profileIconId = data['profileIconId']
         
-        s = Summoner_rank(name = name, puuid = puuid)
+        s = Summoner_rank(name = name, puuid = puuid, profileIconId = profileIconId, tier = top.tier, LP = top.LP, winrate = top.winrate, game_num= top.game_num, win = top.win, lose = top.lose)
         s.save()
 
 def delete_rankerData():
@@ -99,5 +117,7 @@ class Command(BaseCommand):
         API_KEY = get_API_key()
 
         delete_rankerData()
-        TOPsNames = get_TOPsNames()
-        set_rankerData(TOPsNames, API_KEY)
+        TOPs = get_TOPs()
+        set_rankerData(TOPs, API_KEY)
+        update_time = datetime.datetime.now()
+        print(update_time)
