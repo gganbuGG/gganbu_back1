@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from data.views import SummonerAPI, ChampionAPI
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/summoner/', SummonerAPI.as_view()),
+    path('api/champion/', ChampionAPI.as_view()),
 ]
