@@ -5,8 +5,12 @@ from collections import Counter
 class SummonerSerializer(serializers.ModelSerializer) :
     class Meta :
         model = Summoner_rank
+<<<<<<< HEAD
         fields = ('name', 'profileIconId', 'tier', 'LP', 'winrate', 'game_num', 'win', 'lose' )
 
+=======
+        fields = ('name', 'LP', 'game_num', 'lose', 'profileIconId', 'tier', 'win', 'winrate')          # 모든 필드 포함
+>>>>>>> 61f17bcd7104d2bbaacf7ecba4842ffebeeeb11d
 
 class ChampionSerializer(serializers.ModelSerializer) :
     items = serializers.SerializerMethodField('get3items')
