@@ -1,13 +1,29 @@
 from django.core.management.base import BaseCommand
 from data.models import Combinations_partner,Combinations, Champion
 from collections import Counter
-import datetime
+
+def convert_unixtime(date_time):
+    """Convert datetime to unixtime"""
+    import datetime
+    unixtime = datetime.datetime.strptime(date_time,
+                               '%Y-%m-%d %H:%M:%S').timestamp()
+    return int(unixtime)
 
 class Command(BaseCommand):
     help = "챔피언 통계(아이템, tier) - 1등한 소환사 팀에서 자주 등장했던 챔피언의 아이템, 티어 통계"
     def handle(self, *args, **kwargs):
-        combinations = Combinations.objects.all()
+        combinations = Combinations.objects.all().order_by('-updated_time')
+        c_time = Champion.objects.all().order_by('-updated_time')
+        
+        if not c_time:
+            c_time = '2023-01-01 00:00:00'
+        else :
+            c_time = str(Combinations.objects.all().order_by('-updated_time')[0].updated_time)[:19]
+        
+        c_time = convert_unixtime(c_time)
         for combination in combinations:
+            if c_time > convert_unixtime(str(combination.updated_time)[:19]): 
+                continue
             units = combination.units
             for unit in units:
                 c = Champion.objects.filter(name = unit["character_id"])
@@ -27,8 +43,10 @@ class Command(BaseCommand):
                     c = Champion(name = unit["character_id"],items = items, tier = tiers, rarity = unit["rarity"])
                     c.save()
 
-        combinations_partner = Combinations_partner.objects.all()
+        combinations_partner = Combinations_partner.objects.all().order_by('-updated_time')
         for combination in combinations_partner:
+            if c_time > convert_unixtime(str(combination.updated_time)[:19]): 
+                continue
             units = combination.units
             for unit in units:
                 c = Champion.objects.filter(name = unit["character_id"])
@@ -49,25 +67,5 @@ class Command(BaseCommand):
                     c.save()
 
 
-        champions = Champion.objects.all()
-        rank_unit = dict()
-        rank_unit_item = dict()
-        rank_unit_tier = dict()
-
-        for champion in champions:
-            rank_unit[champion.name] = len(champion.tier)
-            unit_items = champion.items
-            unit_items = Counter(unit_items).most_common(3)
-            rank_unit_item[champion.name] = unit_items
-            unit_tiers = champion.tier
-            unit_tiers = Counter(unit_tiers).most_common(1)
-            rank_unit_tier[champion.name] = unit_tiers
-
-        print(rank_unit)
-        print(rank_unit_item)
-        print(rank_unit_tier)
-    
-        update_time = datetime.datetime.now()
-        print(update_time)
 
         

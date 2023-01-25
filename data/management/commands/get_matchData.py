@@ -1,8 +1,15 @@
 from django.core.management.base import BaseCommand
 import requests
 import time
-from data.models import Match, Summoner_rank
 import datetime
+from data.models import Match, Summoner_rank
+
+def convert_unixtime(date_time):
+    """Convert datetime to unixtime"""
+    import datetime
+    unixtime = datetime.datetime.strptime(date_time,
+                               '%Y-%m-%d %H:%M:%S').timestamp()
+    return int(unixtime)
 
 def get_API_key():
     file = open("./riot_API.txt", "r")
@@ -19,16 +26,19 @@ def get_puuids():
     return puuids
 
 def get_matchData(puuids, API_KEY):
-    match_list = []
-    match_list = set(match_list)
+    start = Match.objects.all().order_by('-updated_time')
+    if not start:
+        start = convert_unixtime('2023-01-18 00:00:00'[:19])
+    else :
+        start = convert_unixtime(str(start[0].updated_time)[:19])
     for puuid in puuids:
-        url = f'https://asia.api.riotgames.com/tft/match/v1/matches/by-puuid/{puuid}/ids?start=0&count=20&api_key={API_KEY}'
+        url = f'https://asia.api.riotgames.com/tft/match/v1/matches/by-puuid/{puuid}/ids?start=0&startTime={start}&count=100&api_key={API_KEY}'
         response = requests.get(url)
 
         while response.status_code == 429:
             print("try 5 second wait time")
             time.sleep(5)
-            url = f'https://asia.api.riotgames.com/tft/match/v1/matches/by-puuid/{puuid}/ids?start=0&count=20&api_key={API_KEY}'
+            url = f'https://asia.api.riotgames.com/tft/match/v1/matches/by-puuid/{puuid}/ids?start=0&startTime={start}&count=100&api_key={API_KEY}'
             response = requests.get(url)
 
         ids = response.json()
@@ -80,7 +90,7 @@ def get_matchData(puuids, API_KEY):
                 break
 
             data = response.json()
-            if data["info"]['tft_game_type'] == 'pairs':
+            if data['info']['tft_game_type'] == 'pairs':
                 m = Match.objects.filter(matchId = matchid)
                 if not m :
                     m = Match(matchId = matchid, info = data)
@@ -93,5 +103,4 @@ class Command(BaseCommand):
 
         puuids = get_puuids()
         get_matchData(puuids, API_KEY)
-        update_time = datetime.datetime.now()
-        print(update_time)
+        Match.objects.order_by('-updated_time')

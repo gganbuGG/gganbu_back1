@@ -3,7 +3,6 @@ import requests
 from data.models import Summoner_rank
 from bs4 import BeautifulSoup
 import time
-import datetime
 
 class Summoner:
     def __init__(self, name, tier, LP, winrate, game_num, win):
@@ -119,5 +118,3 @@ class Command(BaseCommand):
         delete_rankerData()
         TOPs = get_TOPs()
         set_rankerData(TOPs, API_KEY)
-        update_time = datetime.datetime.now()
-        print(update_time)

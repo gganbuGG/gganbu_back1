@@ -3,6 +3,13 @@ from data.models import Combinations_partner,Combinations, Champion
 from collections import Counter
 import datetime
 
+def convert_unixtime(date_time):
+    """Convert datetime to unixtime"""
+    import datetime
+    unixtime = datetime.datetime.strptime(date_time,
+                               '%Y-%m-%d %H:%M:%S').timestamp()
+    return unixtime
+
 class Command(BaseCommand):
     help = "Update 100 Ranker Data in the database to new Ranker Data."
     def handle(self, *args, **kwargs):

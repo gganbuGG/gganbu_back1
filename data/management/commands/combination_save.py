@@ -1,12 +1,27 @@
 from django.core.management.base import BaseCommand
 from data.models import Match,Combinations_partner,Combinations
-import datetime
+
+def convert_unixtime(date_time):
+    """Convert datetime to unixtime"""
+    import datetime
+    unixtime = datetime.datetime.strptime(date_time,
+                               '%Y-%m-%d %H:%M:%S').timestamp()
+    return int(unixtime)
 class Command(BaseCommand):
     help = "1등한 소환사들의 덱정보 저장"
     def handle(self, *args, **kwargs):
-        matchs = Match.objects.all()
+        matchs = Match.objects.all().order_by('-updated_time')
+        c_time = Combinations.objects.all().order_by('-updated_time')
+        if not c_time:
+            c_time = '2023-01-01 00:00:00'
+        else :
+            c_time = str(Combinations.objects.all().order_by('-updated_time')[0].updated_time)[:19]
 
+        
+        c_time = convert_unixtime(c_time)
         for match in matchs:
+            if c_time > convert_unixtime(str(match.updated_time)[:19]) :
+                continue
             participants = match.info["info"]["participants"]
             for participant in participants:
                 if participant["placement"] == 1 :
@@ -30,7 +45,3 @@ class Command(BaseCommand):
                     units = participant["units"]
                     c = Combinations_partner(units = units, traits = trait_active2, match = match)
                     c.save()
-
-
-        update_time = datetime.datetime.now()
-        print(update_time)

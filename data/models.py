@@ -1,8 +1,12 @@
 from django.db import models
-import datetime
 
 # Create your models here.
-class Summoner_rank(models.Model):
+class Update(models.Model):
+    updated_time = models.DateTimeField(auto_now=True)
+    class Meta:
+        abstract = True
+
+class Summoner_rank(Update):
     name = models.CharField(max_length=30)
     puuid = models.CharField(max_length=100)
     profileIconId = models.IntegerField(null=True)
@@ -16,25 +20,25 @@ class Summoner_rank(models.Model):
     def __str__(self):
         return self.name
 
-class Match(models.Model):
+class Match(Update):
     matchId = models.CharField(max_length=30)
     info = models.JSONField(null=True)
 
     def __str__(self):
         return self.matchId
 
-class Combinations(models.Model):
+class Combinations(Update):
     units= models.JSONField(null=True)
     traits = models.JSONField(null=True)
     match = models.ForeignKey("Match",on_delete=models.CASCADE)
 
-class Combinations_partner(models.Model):
+class Combinations_partner(Update):
 
     units= models.JSONField(null=True)
     traits = models.JSONField(null=True)
     match = models.ForeignKey("Match",on_delete=models.CASCADE)
 
-class Champion(models.Model):
+class Champion(Update):
     name = models.CharField(max_length=30)
     items = models.JSONField(null=True)
     tier = models.JSONField(null=True)
