@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from .models import Summoner_rank, Champion
 from rest_framework.views import APIView
 from .serializer import SummonerSerializer, ChampionSerializer
+from django.http import HttpResponse
 
 
 
@@ -28,3 +29,10 @@ class SummonerAPI(APIView):
             "data" : serializer.data
         }
         return Response(serializer)
+
+def info(request):
+    response = HttpResponse()
+    response.write("<h1>Info</h1>")
+    response.write("<p>api/summoner : ranker data</p>")
+    response.write("<p>api/champion : champion statistics</p>")
+    return response
