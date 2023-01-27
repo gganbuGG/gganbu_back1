@@ -39,5 +39,5 @@ def info(request):
 
 def riot(request):
     file = open("./riot.txt")
-    response = HttpResponse(file)
+    response = HttpResponse(file, content_type='text/plain')
     return response
