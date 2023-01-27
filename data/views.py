@@ -38,6 +38,8 @@ def info(request):
     return response
 
 def riot(request):
-    file = open("./riot.txt")
-    response = HttpResponse(file)
+    filename = "riot.txt"
+    content = '51ebe893-3b0b-4f97-8906-aa3da442230a'
+    response = HttpResponse(content, content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename={0}'.format(filename)
     return response
