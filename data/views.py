@@ -30,16 +30,12 @@ class SummonerAPI(APIView):
         }
         return Response(serializer)
 
-def info(request):
-    response = HttpResponse()
-    response.write("<h1>Info</h1>")
-    response.write("<p>api/summoner : ranker data</p>")
-    response.write("<p>api/champion : champion statistics</p>")
-    return response
-
 def riot(request):
     filename = "riot.txt"
     content = '51ebe893-3b0b-4f97-8906-aa3da442230a'
     response = HttpResponse(content, content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename={0}'.format(filename)
     return response
+
+def info(request):
+    return render(request, 'data/info.html')
