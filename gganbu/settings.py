@@ -38,9 +38,9 @@ def get_secret(setting):
 SECRET_KEY = get_secret("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['.pythonanywhere.com']
+ALLOWED_HOSTS = ['.pythonanywhere.com','127.0.0.1']
 
 
 # Application definition
