@@ -36,3 +36,8 @@ def info(request):
     response.write("<p>api/summoner : ranker data</p>")
     response.write("<p>api/champion : champion statistics</p>")
     return response
+
+def riot(request):
+    file = open("./riot.txt")
+    response = HttpResponse(file)
+    return response

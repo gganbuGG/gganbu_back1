@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/summoner/', SummonerAPI.as_view()),
     path('api/champion/', ChampionAPI.as_view()),
+    path('riot.txt/', views.riot),
     path('',views.info )
 ]
