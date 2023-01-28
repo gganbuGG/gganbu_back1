@@ -1,6 +1,78 @@
-from rest_framework import serializers
-from .models import Summoner_rank, Champion
-from collections import Counter
+from data.models import Combinations, Combinations_partner, Champion
+from django.core.management.base import BaseCommand
+
+def champData(name):
+    champ = {
+    "TFT8_Kaisa" : 
+    {
+        "name" : "카이사",
+        "traits" : ["정찰단","별 수호자"]
+    },
+    "TFT8_Lux" : 
+    {
+        "name" : "럭스",
+        "traits" : ["주문투척자","별 수호자"]
+    },
+    "TFT8_Kayle" : "케일",
+    "TFT8_Poppy" : "뽀삐",
+    "TFT8_Galio" : "갈리오",
+    "TFT8_Rell" : "렐",
+    "TFT8_Velkoz" : "벨코즈",
+    "TFT8_Nilah" : "닐라",
+    "TFT8_Ashe" : "애쉬",
+    "TFT8_Yasuo" : "야스오",
+    "TFT8_Senna" : "세나",
+    "TFT8_Zed" : "제드",
+    "TFT8_Lulu" : "룰루",
+    "TFT8_Nunu" : "누누",
+    "TFT8_Yuumi" : "유미",
+    "TFT8_Zoe" : "조이",
+    "TFT8_Taliyah" : "탈리야",
+    "TFT8_Sivir" : "시비르",
+    "TFT8_Gangplank" : "갱플랭크",
+    "TFT8_WuKong" : "오공",
+    "TFT8_Draven" : "드레이븐",
+    "TFT8_Malphite" : "말파이트",
+    "TFT8_Nasus" : "나서스",
+    "TFT8_Jinx" : "징크스",
+    "TFT8_Vayne" : "베인",
+    "TFT8_MissFortune" : "미스포츈",
+    "TFT8_Chogath" : "초가스",
+    "TFT8_Rammus" : "람머스",
+    "TFT8_BelVeth" : "벨베스",
+    "TFT8_AurelionSol" : "아우렐리온솔",
+    "TFT8_Zac" : "자크",
+    "TFT8_Mordekaiser" : "모데카이저",
+    "TFT8_Leblanc" : "르블랑",
+    "TFT8_Sylas" : "사일러스",
+    "TFT8_Camille" : "카밀",
+    "TFT8_Ezreal" : "이즈리얼",
+    "TFT8_Sona" : "소나",
+    "TFT8_Ekko" : "에코",
+    "TFT8_Sett" : "세트",
+    "TFT8_Janna" : "잔나",
+    "TFT8_Urgot" : "우르곳",
+    "TFT8_Syndra" : "신드라",
+    "TFT8_Fiddlesticks" : "피들스틱",
+    "TFT8_Blitzcrank" : "블리츠크랭크",
+    "TFT8_Renekton" : "레넥톤",
+    "TFT8_Vi" : "바이",
+    "TFT8_LeeSin" : "리신",
+    "TFT8_Riven" : "리븐",
+    "TFT8_Jax" : "잭스",
+    "TFT8_Sejuani" : "세주아니",
+    "TFT8_Soraka" : "소라카",
+    "TFT8_Talon" : "탈론",
+    "TFT8_Fiora" : "피오라",
+    "TFT8_Annie" : "애니",
+    "TFT8_Alistar" : "알리스타",
+    "TFT8_Viego" : "비에고",
+    "TFT8_Samira" : "사미라",
+    "TFT8_Aphelios" : "아펠리오스",
+    "TFT8_Leona" : "레오나"
+    }
+
+    return champ[name]
 
 def EtoKItem(name):
     item = {
@@ -66,34 +138,16 @@ def EtoKItem(name):
         "TFT4_Item_OrnnDeathsDefiance" : "죽음의 저항",
         "TFT4_Item_OrnnTheCollector" : "황금 징수의 총",
         "TFT4_Item_OrnnObsidianCleaver" : "흑요석 양날 도끼",
-        "TFT_Item_EmptyBag" : "도적의 장갑(업데이트 필요)"
     }
     return item[name]
-class SummonerSerializer(serializers.ModelSerializer) :
-    class Meta :
-        model = Summoner_rank
-        fields = ('name', 'profileIconId', 'tier', 'LP', 'winrate', 'game_num', 'win', 'lose' )
 
-
-class ChampionSerializer(serializers.ModelSerializer) :
-    items = serializers.SerializerMethodField('get3items')
-    tier = serializers.SerializerMethodField('getmosttier')
-    how_many = serializers.SerializerMethodField('gethow')
-
-    class Meta :
-        model = Champion
-        fields = ('name', 'items', 'rarity', 'tier', 'how_many')
+class Command(BaseCommand):
     
-
-    
-    def get3items(self, obj):
-        items = []
-        for name in Counter(obj.items).most_common(3):
-            items.append(EtoKItem(name[0]))
-        return items
-    
-    def getmosttier(self, obj):
-        return Counter(obj.tier).most_common(1)[0][0]
-
-    def gethow(self, obj):
-        return len(obj.tier)
+    def handle(self, *args, **kwargs):
+        cs = Champion.objects.all()
+        for c in cs:
+            temp = []
+            items = c.items
+            for item in items:
+                temp.append(EtoKItem(item))
+            print(temp)
