@@ -66,7 +66,7 @@ def EtoKItem(name):
         "TFT4_Item_OrnnDeathsDefiance" : "죽음의 저항",
         "TFT4_Item_OrnnTheCollector" : "황금 징수의 총",
         "TFT4_Item_OrnnObsidianCleaver" : "흑요석 양날 도끼",
-        "TFT_Item_EmptyBag" : "도적의 장갑(업데이트 필요)"
+        "TFT_Item_EmptyBag" : "앰티백"
     }
     return item[name]
 class SummonerSerializer(serializers.ModelSerializer) :

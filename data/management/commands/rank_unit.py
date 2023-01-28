@@ -1,6 +1,5 @@
 from django.core.management.base import BaseCommand
 from data.models import Combinations_partner,Combinations, Champion
-from collections import Counter
 
 def convert_unixtime(date_time):
     """Convert datetime to unixtime"""
