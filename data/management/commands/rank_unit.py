@@ -164,6 +164,9 @@ class Command(BaseCommand):
                     tiers = c[0].tier
                     c.delete()
                     for item in unit["itemNames"]:
+                        if item == "TFT_Item_ThiefsGloves" or item == "TFT_Item_EmptyBag" : 
+                            items.append("TFT_Item_ThiefsGloves")
+                            break
                         items.append(item)
                     tiers.append(unit["tier"])
                     c = Champion(name = EtoKName(unit["character_id"]),items = items, tier = tiers, rarity = unit["rarity"])
@@ -187,6 +190,9 @@ class Command(BaseCommand):
                     tiers = c[0].tier
                     c.delete()
                     for item in unit["itemNames"]:
+                        if item == "TFT_Item_ThiefsGloves" or item == "TFT_Item_EmptyBag" : 
+                            items.append("TFT_Item_ThiefsGloves")
+                            break
                         items.append(item)
                     tiers.append(unit["tier"])
                     c = Champion(name = EtoKName(unit["character_id"]),items = items, tier = tiers, rarity = unit["rarity"])
