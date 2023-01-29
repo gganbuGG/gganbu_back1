@@ -22,9 +22,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/summoner/', SummonerAPI.as_view()),
     path('api/champion/', ChampionAPI.as_view()),
-    path('api/onedeck/winrate',OneDeckAPI_winrate.as_view()),
-    path('api/onedeck/windefencerate',OneDeckAPI_windefencerate.as_view()),
-    path('api/onedeck/avgplace',OneDeckAPI_avgplace.as_view()),
+    path('api/onedeck/winrate/',OneDeckAPI_winrate.as_view()),
+    path('api/onedeck/windefencerate/',OneDeckAPI_windefencerate.as_view()),
+    path('api/onedeck/avgplace/',OneDeckAPI_avgplace.as_view()),
     path('riot.txt/', views.riot),
     path('',views.info )
 ]
