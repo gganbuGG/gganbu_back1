@@ -1,9 +1,9 @@
 
 from django.shortcuts import render
 from rest_framework.response import Response
-from .models import Summoner_rank, Champion
+from .models import Summoner_rank, Champion, Deck
 from rest_framework.views import APIView
-from .serializer import SummonerSerializer, ChampionSerializer
+from .serializer import SummonerSerializer, ChampionSerializer, OneDeckSerializer
 from django.http import HttpResponse
 
 
@@ -29,6 +29,40 @@ class SummonerAPI(APIView):
             "data" : serializer.data
         }
         return Response(serializer)
+
+class OneDeckAPI_winrate(APIView):
+    def get(self, request):
+        queryset = Deck.objects.all().order_by("-winrate")[:10]
+        serializer = OneDeckSerializer(queryset, many=True)
+        time = Deck.objects.all().order_by('-updated_time')[0].updated_time
+        serializer = {
+            "updated_time" : time,
+            "data" : serializer.data
+        }
+        return Response(serializer)
+
+class OneDeckAPI_windefencerate(APIView):
+    def get(self, request):
+        queryset = Deck.objects.all().order_by("-windefencerate")[:10]
+        serializer = OneDeckSerializer(queryset, many=True)
+        time = Deck.objects.all().order_by('-updated_time')[0].updated_time
+        serializer = {
+            "updated_time" : time,
+            "data" : serializer.data
+        }
+        return Response(serializer)
+
+class OneDeckAPI_avgplace(APIView):
+    def get(self, request):
+        queryset = Deck.objects.all().order_by("avgplace")[:10]
+        serializer = OneDeckSerializer(queryset, many=True)
+        time = Deck.objects.all().order_by('-updated_time')[0].updated_time
+        serializer = {
+            "updated_time" : time,
+            "data" : serializer.data
+        }
+        return Response(serializer)
+
 
 def riot(request):
     filename = "riot.txt"

@@ -1,5 +1,6 @@
 from data.models import Match, DeckData
 from django.core.management.base import BaseCommand
+from collections import Counter
 
 def convert_unixtime(date_time):
     """Convert datetime to unixtime"""
@@ -12,10 +13,11 @@ def convert_unixtime(date_time):
 
 class Group:
 
-    def __init__(self, units, augments, placement):
+    def __init__(self, units, augments, placement, core):
         self.units = units
         self.augments = augments
         self.placement = placement
+        self.core = core
 
 class Command(BaseCommand):
     
@@ -44,8 +46,11 @@ class Command(BaseCommand):
                 group4 = []
                 for player in match.info["info"]["participants"]:
                     units = []
+                    core = []
                     for unit in player["units"]:
                         units.append(unit["character_id"])
+                        if len(unit["itemNames"]) == 3:
+                            core.append(unit["character_id"])
                     augments = []
                     for augment in player["augments"]:
                         augments.append(augment)
@@ -60,7 +65,7 @@ class Command(BaseCommand):
                     elif placement == 7 or placement == 8:
                         placement = 4
 
-                    g = Group(units,augments,placement)
+                    g = Group(units,augments,placement, core)
                     if player["partner_group_id"] == 1:
                         group1.append(g)
                     elif player["partner_group_id"] == 2:
@@ -70,9 +75,9 @@ class Command(BaseCommand):
                     elif player["partner_group_id"] == 4:
                         group4.append(g)
             
-                DeckData(placement = group1[0].placement, units1 = group1[0].units, units2 = group1[1].units, augments1 = group1[0].augments, augments2 = group1[1].augments).save()
-                DeckData(placement = group2[0].placement, units1 = group2[0].units, units2 = group2[1].units, augments1 = group2[0].augments, augments2 = group2[1].augments).save()
-                DeckData(placement = group3[0].placement, units1 = group3[0].units, units2 = group3[1].units, augments1 = group3[0].augments, augments2 = group3[1].augments).save()
-                DeckData(placement = group4[0].placement, units1 = group4[0].units, units2 = group4[1].units, augments1 = group4[0].augments, augments2 = group4[1].augments).save()
+                DeckData(placement = group1[0].placement, units1 = group1[0].units, coreunits1 = group1[0].core , units2 = group1[1].units, coreunits2 = group1[1].core , augments1 = group1[0].augments, augments2 = group1[1].augments).save()
+                DeckData(placement = group2[0].placement, units1 = group2[0].units, coreunits1 = group2[0].core , units2 = group2[1].units, coreunits2 = group2[1].core , augments1 = group2[0].augments, augments2 = group2[1].augments).save()
+                DeckData(placement = group3[0].placement, units1 = group3[0].units, coreunits1 = group3[0].core , units2 = group3[1].units, coreunits2 = group3[1].core , augments1 = group3[0].augments, augments2 = group3[1].augments).save()
+                DeckData(placement = group4[0].placement, units1 = group4[0].units, coreunits1 = group4[0].core , units2 = group4[1].units, coreunits2 = group4[1].core , augments1 = group4[0].augments, augments2 = group4[1].augments).save()
 
 

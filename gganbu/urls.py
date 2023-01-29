@@ -15,13 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from data.views import SummonerAPI, ChampionAPI
+from data.views import SummonerAPI, ChampionAPI, OneDeckAPI_winrate, OneDeckAPI_windefencerate, OneDeckAPI_avgplace
 from data import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/summoner/', SummonerAPI.as_view()),
     path('api/champion/', ChampionAPI.as_view()),
+    path('api/onedeck/winrate',OneDeckAPI_winrate.as_view()),
+    path('api/onedeck/windefencerate',OneDeckAPI_windefencerate.as_view()),
+    path('api/onedeck/avgplace',OneDeckAPI_avgplace.as_view()),
     path('riot.txt/', views.riot),
     path('',views.info )
 ]
