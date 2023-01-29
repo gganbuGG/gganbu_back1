@@ -47,13 +47,17 @@ class Champion(Update):
 class DeckData(Update):
     placement = models.IntegerField(null=True)
     units1 = models.JSONField(null=True)
+    coreunits1 = models.JSONField(null=True)
     units2 = models.JSONField(null=True)
+    coreunits2 = models.JSONField(null=True)
     augments1= models.JSONField(null=True)
     augments2= models.JSONField(null=True)
 
 class Deck(Update):
-    win_rate = models.CharField(max_length=30, null=True)
-    windefense_rate = models.CharField(max_length=30, null=True)
-    place_avg = models.CharField(max_length=30, null=True)
-    game_rate = models.CharField(max_length=30, null=True)
-
+    winrate = models.FloatField(max_length=30, null=True)
+    windefencerate = models.FloatField(max_length=30, null=True)
+    avgplace = models.FloatField(max_length=30, null=True)
+    units = models.JSONField(null=True)
+    core = models.JSONField(null=True)
+    augments = models.JSONField(null=True)
+    traits = models.CharField(max_length=100, null = True)
