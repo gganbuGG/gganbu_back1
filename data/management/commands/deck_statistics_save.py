@@ -472,11 +472,10 @@ class Command(BaseCommand):
                 for trait in t:
                     traits.append(trait)
 
-            t = ""
+            tra = {
+                }
             for trait in Counter(traits).most_common():
-                t += str(trait[1])
-                t += trait[0]
-                t += " "
-            
-            d = Deck(winrate = round(one/deck[1]*100, 1), windefencerate = round(defence/deck[1]*100,1), avgplace = round(pl/deck[1],1), units = units, augments = ag, traits = t,core= core)
+                tra[trait[0]] = trait[1]
+                
+            d = Deck(winrate = round(one/deck[1]*100, 1), windefencerate = round(defence/deck[1]*100,1), avgplace = round(pl/deck[1],1), units = units, augments = ag, traits = tra,core= core)
             d.save()
