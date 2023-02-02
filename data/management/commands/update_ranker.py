@@ -117,4 +117,7 @@ class Command(BaseCommand):
 
         delete_rankerData()
         TOPs = get_TOPs()
+        if type(TOPs) != list:
+            print(TOPs)
+            return 
         set_rankerData(TOPs, API_KEY)
