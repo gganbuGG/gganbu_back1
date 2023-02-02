@@ -475,7 +475,258 @@ class Command(BaseCommand):
             tra = {
                 }
             for trait in Counter(traits).most_common():
-                tra[trait[0]] = trait[1]
+                if trait[0] == "기계유망주":
+                    if trait[1] < 6 and trait[1] >= 3:
+                        tier = 1
+                    elif trait[1] >= 6:
+                        tier = 3
+                    else:
+                        tier = 0
+
+                elif trait[0] == "동물특공대":
+                    if trait[1] >= 3 and trait[1] < 5:
+                        tier = 1
+                    elif trait[1] >= 5 and trait[1] < 7:
+                        tier = 3
+                    elif trait[1] >=7 :
+                        tier = 4
+                    else:
+                        tier = 0
+
+                elif trait[0] == "레이저단":
+                    if trait[1] >= 3 and trait[1] < 6:
+                        tier = 1
+                    elif trait[1] >= 6 and trait[1] < 9:
+                        tier = 3
+                    elif trait[1] >=9 :
+                        tier = 4
+                    else:
+                        tier = 0
+
+                elif trait[0] == "메카: 프라임":
+                    if trait[1] >= 3 and trait[1] < 5:
+                        tier = 1
+                    elif trait[1] >= 5:
+                        tier = 3
+                    else:
+                        tier = 0
+                        
+                elif trait[0] == "민간인":
+                    if trait[1] == 1:
+                        tier = 1
+                    elif trait[1] == 2:
+                        tier = 2
+                    elif trait[1] >=3 :
+                        tier = 3
+                    else:
+                        tier = 0
                 
-            d = Deck(winrate = round(one/deck[1]*100, 1), windefencerate = round(defence/deck[1]*100,1), avgplace = round(pl/deck[1],1), units = units, augments = ag, traits = tra,core= core)
+                elif trait[0] == "별 수호자":
+                    if trait[1] >= 3 and trait[1] < 5:
+                        tier = 1
+                    elif trait[1] >= 5 and trait[1] < 7:
+                        tier = 2
+                    elif trait[1] >= 7 and trait[1] < 9:
+                        tier = 3
+                    elif trait[1] >= 9:
+                        tier = 4
+                    else:
+                        tier = 0
+
+                elif trait[0] == "병기고":
+                    tier = 3
+
+                elif trait[0] == "우세":
+                    if trait[1] >= 3: 
+                        tier = 3
+                    else:
+                        tier = 0
+
+                elif trait[0] == "위협":
+                    tier = 3
+
+                elif trait[0] == "자동방어체계":
+                    if trait[1] >= 2 and trait[1] < 4:
+                        tier = 1
+                    elif trait[1] >= 4 and trait[1] < 6:
+                        tier = 3
+                    elif trait[1] >=6 :
+                        tier = 4
+                    else:
+                        tier = 0
+
+                elif trait[0] == "지하세계":
+                    if trait[1] >= 3 and trait[1] < 5:
+                        tier = 1
+                    elif trait[1] >= 5:
+                        tier = 3
+                    else:
+                        tier = 0
+                        
+                elif trait[0] == "황소부대":
+                    if trait[1] >= 2 and trait[1] < 4:
+                        tier = 1
+                    elif trait[1] >= 4 and trait[1] < 6:
+                        tier = 2
+                    elif trait[1] >=6 and trait[1] < 8:
+                        tier = 3
+                    elif trait[1] >= 8:
+                        tier = 4
+                    else:
+                        tier = 0
+                
+                elif trait[0] == "결투가":
+                    if trait[1] >= 2 and trait[1] < 4:
+                        tier = 1
+                    elif trait[1] >= 4 and trait[1] < 6:
+                        tier = 2
+                    elif trait[1] >=6 and trait[1] < 8:
+                        tier = 3
+                    elif trait[1] >= 8:
+                        tier = 4
+                    else:
+                        tier = 0
+
+                elif trait[0] == "기상캐스터":
+                    tier = 3
+
+                elif trait[0] == "마스코트":
+                    if trait[1] >= 2 and trait[1] < 4:
+                        tier = 1
+                    elif trait[1] >= 4 and trait[1] < 6:
+                        tier = 2
+                    elif trait[1] >=6 and trait[1] < 8:
+                        tier = 3
+                    elif trait[1] >= 8:
+                        tier = 4
+                    else:
+                        tier = 0
+
+                elif trait[0] == "무법자":
+                    if trait[1] >= 3 and trait[1] < 6:
+                        tier = 3
+                    elif trait[1] >= 6:
+                        tier = 4
+                    else:
+                        tier = 0
+
+                elif trait[0] == "방패대":
+                    if trait[1] >= 2 and trait[1] < 3:
+                        tier = 1
+                    elif trait[1] >= 3 and trait[1] < 4:
+                        tier = 2
+                    elif trait[1] >=4 and trait[1] < 5:
+                        tier = 3
+                    elif trait[1] >= 5:
+                        tier = 4
+                    else:
+                        tier = 0
+
+                elif trait[0] == "선의":
+                    if trait[1] >= 2 and trait[1] < 4:
+                        tier = 1
+                    elif trait[1] >= 4 and trait[1] < 6:
+                        tier = 2
+                    elif trait[1] >=6:
+                        tier = 3
+                    else:
+                        tier = 0
+
+                elif trait[0] == "싸움꾼":
+                    if trait[1] >= 2 and trait[1] < 4:
+                        tier = 1
+                    elif trait[1] >= 4 and trait[1] < 6:
+                        tier = 2
+                    elif trait[1] >=6 and trait[1] < 8:
+                        tier = 3
+                    elif trait[1] >= 8:
+                        tier = 4
+                    else:
+                        tier = 0
+
+                elif trait[0] == "엄호대":
+                    if trait[1] >= 2 and trait[1] < 4:
+                        tier = 1
+                    elif trait[1] >= 4 and trait[1] < 6:
+                        tier = 3
+                    elif trait[1] >=6:
+                        tier = 4
+                    else:
+                        tier = 0
+
+                elif trait[0] == "에이스":
+                    if trait[1] == 1:
+                        tier = 1
+                    elif trait[1] >= 2 and trait[1] < 4:
+                        tier = 0
+                    elif trait[1] == 4:
+                        tier = 3
+                    else:
+                        tier = 0
+                        
+                elif trait[0] == "익살꾼":
+                    if trait[1] >= 2 and trait[1] < 3:
+                        tier = 1
+                    elif trait[1] >= 3:
+                        tier = 3
+                    else:
+                        tier = 0
+                        
+                elif trait[0] == "정찰단":
+                    if trait[1] >= 2  and trait[1] < 3:
+                        tier = 1
+                    elif trait[1] >= 3 and trait[1] < 4:
+                        tier = 2
+                    elif trait[1] >= 4:
+                        tier = 3
+                    else:
+                        tier = 0
+
+                elif trait[0] == "주문투척자":
+                    if trait[1] >= 2 and trait[1] < 4:
+                        tier = 1
+                    elif trait[1] >= 4 and trait[1] < 6:
+                        tier = 2
+                    elif trait[1] >=6 and trait[1] < 8:
+                        tier = 3
+                    elif trait[1] >= 8:
+                        tier = 4
+                    else:
+                        tier = 0
+                
+                elif trait[0] == "타락":
+                    tier = 3
+
+                elif trait[0] == "특등사수":
+                    if trait[1] >= 2 and trait[1] < 4:
+                        tier = 1
+                    elif trait[1] >= 4:
+                        tier = 3
+                    else:
+                        tier = 0
+                    
+                elif trait[0] == "해커":
+                    if trait[1] >= 2 and trait[1] < 3:
+                        tier = 1
+                    elif trait[1] >= 3 and trait[1] < 4:
+                        tier = 2
+                    elif trait[1] >= 4:
+                        tier = 3
+                    else:
+                        tier = 0
+
+                    
+                active = {
+                }
+                active["tier"] = tier
+                active["count"] = trait[1]
+                tra[trait[0]] = active
+
+            #t = sorted(tra.items(), key=lambda x: x[1])
+            t = sorted(list(tra.items()), key= lambda x: x[1]["tier"], reverse=True)
+            d = {}
+            for temp in t:
+                d[temp[0]] = temp[1]["count"]
+
+            d = Deck(winrate = round(((one * deck[1])/len(deckDatas))*100, 1), windefencerate = round(((defence * deck[1])/len(deckDatas))*100,1), avgplace = round(pl/deck[1],1), units = units, augments = ag, traits = d,core= core)
             d.save()
