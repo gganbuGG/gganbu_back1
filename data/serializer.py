@@ -168,7 +168,7 @@ def EtoK(name):
     "TFT8_Augment_AnimaSquadTrait" : "동물특공대 심장",
     "TFT8_Augment_JinxSupport" : "전부 터져라!",
     "TFT8_Augment_BrawlerEmblem" : "싸움꾼 문장",
-    "TFT8_Augment_BrawlerEmblem2" : "싸움꾼 영혼",
+    "TFT8_Augment_BrawlerEmblem2" : "싸움꾼 왕관",
     "TFT8_Augment_FioraSupport" : "황소의 활력",
     "TFT8_Augment_ThreatMaxHealth" : "위협 레벨: 최대",
     "TFT7_Augment_BandOfThieves1" : "도둑 무리1",
