@@ -70,7 +70,6 @@ class Command(BaseCommand):
     
     def handle(self, *args, **kwargs):
 
-        cs = Champion.objects.all()
-        for c in cs:
-            c.name = EtoK(c.name)
-            c.save()
+        na = "Alistar"
+        i = open(f"./images/Champions/{na}.jpg","r")
+        print(i)

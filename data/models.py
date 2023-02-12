@@ -9,7 +9,7 @@ class Update(models.Model):
 class Summoner_rank(Update):
     name = models.CharField(max_length=30)
     puuid = models.CharField(max_length=100)
-    profileIconId = models.IntegerField(null=True)
+    profileIconID = models.IntegerField(null=True)
     tier = models.CharField(max_length=30, null=True)
     LP = models.CharField(max_length=30, null=True)
     winrate = models.CharField(max_length=30, null=True)
