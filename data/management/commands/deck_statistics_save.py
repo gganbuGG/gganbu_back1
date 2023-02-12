@@ -419,10 +419,6 @@ class Command(BaseCommand):
             if d_time > convert_unixtime(str(deckdata.updated_time)[:19]): 
                 continue
             else :
-                """
-                덱데이터 승률 순방률 평균등수 픽률
-                """
-                #승률 먼저 구하자
                 combs.append(Comb(deckdata.units1, deckdata.augments1, deckdata.placement, deckdata.coreunits1))
                 combs.append(Comb(deckdata.units2, deckdata.augments2, deckdata.placement, deckdata.coreunits2))
 

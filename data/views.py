@@ -66,7 +66,7 @@ class OneDeckAPI_avgplace(APIView):
 
 def riot(request):
     filename = "riot.txt"
-    content = '51ebe893-3b0b-4f97-8906-aa3da442230a'
+    content = 'df00023e-6d26-4549-836c-ecfd264c7d78'
     response = HttpResponse(content, content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename={0}'.format(filename)
     return response

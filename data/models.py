@@ -43,6 +43,7 @@ class Champion(Update):
     items = models.JSONField(null=True)
     tier = models.JSONField(null=True)
     rarity = models.IntegerField(null=True)
+    image = models.ImageField(null= True)
 
 class DeckData(Update):
     placement = models.IntegerField(null=True)
