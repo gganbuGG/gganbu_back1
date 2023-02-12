@@ -455,7 +455,7 @@ class SummonerSerializer(serializers.ModelSerializer) :
         fields = ('name', 'profileIcon', 'tier', 'LP', 'winrate', 'game_num', 'win', 'lose' )
 
     def getProfileIcon(self,obj):
-        url = f"http://gganbuback1.pythonanywhere.com//static/profileicon/{obj.profileIconID}.png"
+        url = f"http://gganbuback1.pythonanywhere.com/static/profileicon/{obj.profileIconID}.png"
         return url
 
 class ChampionSerializer(serializers.ModelSerializer) :
