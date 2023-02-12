@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import Summoner_rank, Champion, Deck
 from collections import Counter
+import base64
+from django.core.files import File
 
 def EtoKItem(name):
     item = {
@@ -447,10 +449,14 @@ def korean(name, how):
     elif how == "traits":
         return champ[name]["traits"]
 class SummonerSerializer(serializers.ModelSerializer) :
+    profileIcon = serializers.SerializerMethodField('getProfileIcon')
     class Meta :
         model = Summoner_rank
-        fields = ('name', 'profileIconId', 'tier', 'LP', 'winrate', 'game_num', 'win', 'lose' )
+        fields = ('name', 'profileIcon', 'tier', 'LP', 'winrate', 'game_num', 'win', 'lose' )
 
+    def getProfileIcon(self,obj):
+        url = f"http://gganbuback1.pythonanywhere.com//static/profileicon/{obj.profileIconID}.png"
+        return url
 
 class ChampionSerializer(serializers.ModelSerializer) :
     items = serializers.SerializerMethodField('get3items')

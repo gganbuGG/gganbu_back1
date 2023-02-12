@@ -3,6 +3,7 @@ import requests
 from data.models import Summoner_rank
 from bs4 import BeautifulSoup
 import time
+import urllib.request
 
 class Summoner:
     def __init__(self, name, tier, LP, winrate, game_num, win):
@@ -21,6 +22,7 @@ def get_API_key():
     return API_KEY
 
 def get_TOPs():
+    # 크롤링해서 정보 객체의 배열로 저장
     url = 'https://lolchess.gg/leaderboards?mode=doubleup&region=kr'
 
     response = requests.get(url)
@@ -100,11 +102,21 @@ def set_rankerData(TOPs, API_KEY):
         puuid = data['puuid']
         name = data['name']
         profileIconId = data['profileIconId']
-        
-        s = Summoner_rank(name = name, puuid = puuid, profileIconId = profileIconId, tier = top.tier, LP = top.LP, winrate = top.winrate, game_num= top.game_num, win = top.win, lose = top.lose)
+
+        try:
+            #프로필 아이콘 이미지 로켈에 있는지 확인
+            img = open(f".data/static/profileicon/{profileIconId}.png","rb")
+        except FileNotFoundError:
+            #없으면 이미지파일 저장
+            url = f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/profileicon/{profileIconId}.png"
+            urllib.request.urlretrieve(url, f"./data/static/profileicon/{profileIconId}.png")
+        else:
+            img.close()
+        s = Summoner_rank(name = name, puuid = puuid, profileIconID = profileIconId, tier = top.tier, LP = top.LP, winrate = top.winrate, game_num= top.game_num, win = top.win, lose = top.lose)
         s.save()
 
 def delete_rankerData():
+    # 데이터베이스에 저장되어 있던 object들 삭제
     obj = Summoner_rank.objects.all()
     obj.delete()
 

@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from data.models import Combinations_partner,Combinations, Champion
+from PIL import Image
 
 def convert_unixtime(date_time):
     """Convert datetime to unixtime"""
@@ -156,8 +157,17 @@ class Command(BaseCommand):
                 if not c :
                     tiers = []
                     tiers.append(unit["tier"])
-                    c = Champion(name = EtoKName(unit["character_id"]), items = unit["itemNames"], tier = tiers, rarity = unit["rarity"])
+                    items = []
+                    for item in unit["itemNames"]:
+                        if item == "TFT_Item_ThiefsGloves" or item == "TFT_Item_EmptyBag" : 
+                            items.append("TFT_Item_ThiefsGloves")
+                            break
+                        items.append(item)
+                    na = str(unit["character_id"])[5:]
+                    i = Image.open(f"./images/Champions/{na}.jpg")
+                    c = Champion(name = EtoKName(unit["character_id"]), items = items, tier = tiers, rarity = unit["rarity"], image = i)
                     c.save()
+                    i.close()
                 else :
                     items = []
                     items = c[0].items
@@ -169,8 +179,11 @@ class Command(BaseCommand):
                             break
                         items.append(item)
                     tiers.append(unit["tier"])
-                    c = Champion(name = EtoKName(unit["character_id"]),items = items, tier = tiers, rarity = unit["rarity"])
+                    na = str(unit["character_id"])[5:]
+                    i = Image.open(f"./images/Champions/{na}.jpg")
+                    c = Champion(name = EtoKName(unit["character_id"]), items = items, tier = tiers, rarity = unit["rarity"], image = i)
                     c.save()
+                    i.close()
 
         combinations_partner = Combinations_partner.objects.all().order_by('-updated_time')
         for combination in combinations_partner:
@@ -182,8 +195,11 @@ class Command(BaseCommand):
                 if not c :
                     tiers = []
                     tiers.append(unit["tier"])
-                    c = Champion(name = EtoKName(unit["character_id"]), items = unit["itemNames"], tier = tiers, rarity = unit["rarity"])
+                    na = str(unit["character_id"])[5:]
+                    i = Image.open(f"./images/Champions/{na}.jpg")
+                    c = Champion(name = EtoKName(unit["character_id"]), items = items, tier = tiers, rarity = unit["rarity"], image = i)
                     c.save()
+                    i.close()
                 else :
                     items = []
                     items = c[0].items
@@ -194,9 +210,12 @@ class Command(BaseCommand):
                             items.append("TFT_Item_ThiefsGloves")
                             break
                         items.append(item)
-                    tiers.append(unit["tier"])
-                    c = Champion(name = EtoKName(unit["character_id"]),items = items, tier = tiers, rarity = unit["rarity"])
+                    
+                    na = str(unit["character_id"])[5:]
+                    i = Image.open(f"./images/Champions/{na}.jpg")
+                    c = Champion(name = EtoKName(unit["character_id"]), items = items, tier = tiers, rarity = unit["rarity"], image = i)
                     c.save()
+                    i.close()
 
 
 
