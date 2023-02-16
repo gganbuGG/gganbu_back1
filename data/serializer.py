@@ -1,8 +1,7 @@
 from rest_framework import serializers
 from .models import Summoner_rank, Champion, Deck
 from collections import Counter
-import base64
-from django.core.files import File
+import json
 
 def EtoKItem(name):
     item = {
@@ -459,27 +458,54 @@ class SummonerSerializer(serializers.ModelSerializer) :
         return url
 
 class ChampionSerializer(serializers.ModelSerializer) :
-    items = serializers.SerializerMethodField('get3items')
-    tier = serializers.SerializerMethodField('getmosttier')
-    how_many = serializers.SerializerMethodField('gethow')
+
+    name = serializers.SerializerMethodField('getKname')
+    items = serializers.SerializerMethodField('get5items')
+    tier = serializers.SerializerMethodField('getTierData')
+    bigimg = serializers.SerializerMethodField('getbigimg')
+    smallimg = serializers.SerializerMethodField('getsmallimg')
 
     class Meta :
         model = Champion
-        fields = ('name', 'items', 'rarity', 'tier', 'how_many')
+        fields = ('name', 'items', 'rarity', 'tier', 'bigimg', 'smallimg')
     
+    def getKname(self,obj):
+            
+        #tft정보 (한글로 바꾸기)
+        with open('tft-champion.json', 'r', encoding='UTF8') as f:
+            championName = json.load(f)["data"]
+        return championName[obj.name]["name"]
 
+    def get5items(self, obj):
+         #tft정보 (한글로 바꾸기)
+        with open('tft-item.json', 'r', encoding='UTF8') as f:
+            itemName = json.load(f)["data"]
+        i = dict()
+        for item in Counter(obj.items).most_common(5):
+            if (item[0])[:17] == "TFT8_EmblemItems/":
+                i[itemName[item[0]]["name"]] = f"http://127.0.0.1:8000/static/tft-item/{(item[0])[17:]}.png"
+            else:
+                i[itemName[item[0]]["name"]] = f"http://127.0.0.1:8000/static/tft-item/{item[0]}.png"
+            
+        return i
     
-    def get3items(self, obj):
-        items = []
-        for name in Counter(obj.items).most_common(3):
-            items.append(EtoKItem(name[0]))
-        return items
-    
-    def getmosttier(self, obj):
-        return Counter(obj.tier).most_common(1)[0][0]
+    def getTierData(self, obj):
+        all = len(obj.tier)
+        count = Counter(obj.tier)
+        t = dict()
+        t[1] = str(round((count[1]/all)*100, 1))+"%"
+        t[2] = str(round((count[2]/all)*100, 1))+"%"
+        t[3] = str(round((count[3]/all)*100, 1))+"%"
+        return t
 
-    def gethow(self, obj):
-        return len(obj.tier)
+    def getbigimg(self, obj):
+        url = f"http://127.0.0.1:8000/static/tft-champion/{obj.name}.TFT_Set8.png"
+        return url
+
+
+    def getsmallimg(self, obj):
+        url = f"http://127.0.0.1:8000/static/tft-hero-augment/{obj.name}.TFT_Set8.png"
+        return url
 
 class OneDeckSerializer(serializers.ModelSerializer) :
     augments = serializers.SerializerMethodField('getKaug')

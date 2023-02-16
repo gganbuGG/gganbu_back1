@@ -5,13 +5,11 @@ from .models import Summoner_rank, Champion, Deck
 from rest_framework.views import APIView
 from .serializer import SummonerSerializer, ChampionSerializer, OneDeckSerializer
 from django.http import HttpResponse
-from datetime import datetime,date,time
-
 
 
 class ChampionAPI(APIView):
     def get(self, request):
-        queryset = Champion.objects.all()
+        queryset = Champion.objects.all().order_by('-fre')
         serializer = ChampionSerializer(queryset, many=True)
         time = Champion.objects.all().order_by('-updated_time')[0].updated_time
         time = f"{time.year}년{time.month}월{time.day}일{time.hour}시{time.minute}분"
