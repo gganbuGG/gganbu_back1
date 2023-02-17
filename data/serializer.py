@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from .models import Summoner_rank, Champion, Deck
 from collections import Counter
-import json
+import json, os
+from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 def korean(name, how):
     champ = {
     "TFT8_Kaisa" : 
@@ -274,13 +276,15 @@ class ChampionSerializer(serializers.ModelSerializer) :
     def getKname(self,obj):
             
         #tft정보 (한글로 바꾸기)
-        with open('tft-champion.json', 'r', encoding='UTF8') as f:
+        c = os.path.join(BASE_DIR, 'tft-champion.json')
+        with open(c, 'r', encoding='UTF8') as f:
             championName = json.load(f)["data"]
         return championName[obj.name]["name"]
 
     def get5items(self, obj):
          #tft정보 (한글로 바꾸기)
-        with open('tft-item.json', 'r', encoding='UTF8') as f:
+        it = os.path.join(BASE_DIR, 'tft-item.json')
+        with open(it, 'r', encoding='UTF8') as f:
             itemName = json.load(f)["data"]
         i = dict()
         for item in Counter(obj.items).most_common(5):
