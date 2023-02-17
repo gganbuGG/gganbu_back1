@@ -27,16 +27,6 @@ class Match(Update):
     def __str__(self):
         return self.matchId
 
-class Combinations(Update):
-    units= models.JSONField(null=True)
-    traits = models.JSONField(null=True)
-    match = models.ForeignKey("Match",on_delete=models.CASCADE)
-
-class Combinations_partner(Update):
-
-    units= models.JSONField(null=True)
-    traits = models.JSONField(null=True)
-    match = models.ForeignKey("Match",on_delete=models.CASCADE)
 
 class Champion(Update):
     name = models.CharField(max_length=30)
