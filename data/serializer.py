@@ -285,9 +285,9 @@ class ChampionSerializer(serializers.ModelSerializer) :
         i = dict()
         for item in Counter(obj.items).most_common(5):
             if (item[0])[:17] == "TFT8_EmblemItems/":
-                i[itemName[item[0]]["name"]] = f"http://127.0.0.1:8000/static/tft-item/{(item[0])[17:]}.png"
+                i[itemName[item[0]]["name"]] = f"http://gganbuback1.pythonanywhere.com/static/tft-item/{(item[0])[17:]}.png"
             else:
-                i[itemName[item[0]]["name"]] = f"http://127.0.0.1:8000/static/tft-item/{item[0]}.png"
+                i[itemName[item[0]]["name"]] = f"http://gganbuback1.pythonanywhere.com/static/tft-item/{item[0]}.png"
             
         return i
     
@@ -301,12 +301,12 @@ class ChampionSerializer(serializers.ModelSerializer) :
         return t
 
     def getbigimg(self, obj):
-        url = f"http://127.0.0.1:8000/static/tft-champion/{obj.name}.TFT_Set8.png"
+        url = f"http://gganbuback1.pythonanywhere.com/static/tft-champion/{obj.name}.TFT_Set8.png"
         return url
 
 
     def getsmallimg(self, obj):
-        url = f"http://127.0.0.1:8000/static/tft-hero-augment/{obj.name}.TFT_Set8.png"
+        url = f"http://gganbuback1.pythonanywhere.com/static/tft-hero-augment/{obj.name}.TFT_Set8.png"
         return url
 
 class OneDeckSerializer(serializers.ModelSerializer) :
