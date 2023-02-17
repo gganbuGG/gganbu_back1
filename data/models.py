@@ -27,23 +27,13 @@ class Match(Update):
     def __str__(self):
         return self.matchId
 
-class Combinations(Update):
-    units= models.JSONField(null=True)
-    traits = models.JSONField(null=True)
-    match = models.ForeignKey("Match",on_delete=models.CASCADE)
-
-class Combinations_partner(Update):
-
-    units= models.JSONField(null=True)
-    traits = models.JSONField(null=True)
-    match = models.ForeignKey("Match",on_delete=models.CASCADE)
 
 class Champion(Update):
     name = models.CharField(max_length=30)
     items = models.JSONField(null=True)
     tier = models.JSONField(null=True)
     rarity = models.IntegerField(null=True)
-    image = models.ImageField(null= True)
+    fre = models.IntegerField(null=True)
 
 class DeckData(Update):
     placement = models.IntegerField(null=True)
@@ -53,6 +43,8 @@ class DeckData(Update):
     coreunits2 = models.JSONField(null=True)
     augments1= models.JSONField(null=True)
     augments2= models.JSONField(null=True)
+    H_aug1 = models.CharField(max_length=30, null = True)
+    H_aug2 = models.CharField(max_length=30, null = True)
 
 class Deck(Update):
     winrate = models.FloatField(max_length=30, null=True)
