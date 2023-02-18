@@ -54,3 +54,4 @@ class Deck(Update):
     core = models.JSONField(null=True)
     augments = models.JSONField(null=True)
     traits = models.JSONField(null=True)
+    h_aug = models.CharField(max_length=30, null = True)

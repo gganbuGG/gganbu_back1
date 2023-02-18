@@ -3,7 +3,6 @@ import requests
 from data.models import Summoner_rank
 from bs4 import BeautifulSoup
 import time
-import urllib.request
 
 class Summoner:
     def __init__(self, name, tier, LP, winrate, game_num, win):
@@ -103,15 +102,6 @@ def set_rankerData(TOPs, API_KEY):
         name = data['name']
         profileIconId = data['profileIconId']
 
-        try:
-            #프로필 아이콘 이미지 로켈에 있는지 확인
-            img = open(f"data/static/profileicon/{profileIconId}.png","rb")
-        except FileNotFoundError:
-            #없으면 이미지파일 저장
-            url = f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/profileicon/{profileIconId}.png"
-            urllib.request.urlretrieve(url, f"data/static/profileicon/{profileIconId}.png")
-        else:
-            img.close()
         s = Summoner_rank(name = name, puuid = puuid, profileIconID = profileIconId, tier = top.tier, LP = top.LP, winrate = top.winrate, game_num= top.game_num, win = top.win, lose = top.lose)
         s.save()
 
