@@ -1,7 +1,6 @@
 from data.models import DeckData,Deck
 from django.core.management.base import BaseCommand
 from collections import Counter
-import json, os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,246 +17,243 @@ def korean(name, how):
     "TFT8_Kaisa" : 
     {
         "name" : "카이사",
-        "traits" : ["정찰단","별 수호자"]
+        "traits" : ["Set8_Recon","Set8_StarGuardian"]
     },
     "TFT8_Lux" : 
     {
         "name" : "럭스",
-        "traits" : ["주문투척자","별 수호자"]
+        "traits" : ["Set8_Channeler","Set8_StarGuardian"]
     },
     "TFT8_Kayle" : {
         "name" : "케일",
-        "traits" : ["지하세계", "결투가"]
+        "traits" : ["Set8_UndergroundThe", "Set8_Duelist"]
     },
     "TFT8_Poppy" : {
         "name" : "뽀삐",
-        "traits" : ["기계유망주","엄호대"]
+        "traits" : ["Set8_GenAE","Set8_GenAE"]
     },
     "TFT8_Galio" : {
         "name" : "갈리오",
-        "traits" : ["민간인", "마스코트"]
+        "traits" : ["Set8_Civilian", "Set8_Mascot"]
     },
     "TFT8_Rell" : {
         "name" : "렐",
-        "traits" : ["별 수호자","엄호대"]
+        "traits" : ["Set8_StarGuardian","Set8_GenAE"]
     },
     "TFT8_Velkoz" : {
         "name" : "벨코즈",
-        "traits" : ["위협"]
+        "traits" : ["Set8_Threat"]
     },
     "TFT8_Nilah" : {
         "name": "닐라",
-        "traits" : ["별 수호자", "결투가"]
+        "traits" : ["Set8_StarGuardian", "Set8_Duelist"]
     },
     "TFT8_Ashe" : {
         "name":"애쉬",
-        "traits" : ["정찰단", "레이저단"]
+        "traits" : ["Set8_Recon", "Set8_SpaceCorps"]
     },
     "TFT8_Yasuo" : {
         "name":"야스오",
-        "traits" : ["레이저단", "결투가"]
+        "traits" : ["Set8_SpaceCorps", "Set8_Duelist"]
     },
     "TFT8_Senna" : {
         "name":"세나",
-        "traits" : ["레이저단", "특등사수"]
+        "traits" : ["Set8_SpaceCorps", "Set8_Deadeye"]
     },
     "TFT8_Zed" : {
         "name":"제드",
-        "traits" : ["결투가", "레이저단", "해커"]
+        "traits" : ["Set8_Duelist", "Set8_SpaceCorps", "Set8_Hacker"]
     },
     "TFT8_Lulu" : {
         "name":"룰루",
-        "traits" : ["선의", "기계유망주"]
+        "traits" : ["Set8_Heart", "Set8_GenAE"]
     },
     "TFT8_Nunu" : {
         "name":"누누",
-        "traits" : ["마스코트", "기계유망주"]
+        "traits" : ["Set8_Mascot", "Set8_GenAE"]
     },
     "TFT8_Yuumi" : {
         "name":"유미",
-        "traits" : ["별 수호자", "선의","마스코트"]
+        "traits" : ["Set8_StarGuardian", "Set8_Heart","Set8_Mascot"]
     },
     "TFT8_Zoe" : {
         "name":"조이",
-        "traits" : ["기계유망주","익살꾼","해커"]
+        "traits" : ["Set8_GenAE","Set8_Prankster","Set8_Hacker"]
     },
     "TFT8_Taliyah" : {
         "name":"탈리야",
-        "traits" : ["별 수호자", "주문투척자"]
+        "traits" : ["Set8_StarGuardian", "Set8_Channeler"]
     },
     "TFT8_Sivir" : {
         "name":"시비르",
-        "traits" : ["민간인", "특등사수"]
+        "traits" : ["Set8_Civilian", "Set8_Deadeye"]
     },
     "TFT8_Gangplank" : {
         "name":"갱플랭크",
-        "traits" : ["결투가","우세"]
+        "traits" : ["Set8_Duelist","Set8_Supers"]
     },
     "TFT8_WuKong" : {
         "name":"오공",  
-        "traits" : ["메카: 프라임", "엄호대"]
+        "traits" : ["Set8_ExoPrime", "Set8_GenAE"]
     },
     "TFT8_Draven" : {
         "name":"드레이븐",
-        "traits" : ["메카: 프라임", "에이스"]
+        "traits" : ["Set8_ExoPrime", "Set8_Ace"]
     },
     "TFT8_Malphite" : {
         "name":"말파이트",
-        "traits" : ["우세","마스코트"]
+        "traits" : ["Set8_Supers","Set8_Mascot"]
     },
     "TFT8_Nasus" : {
         "name":"나서스",
-        "traits" : ["마스코트","동물특공대"]
+        "traits" : ["Set8_Mascot","Set8_AnimaSquad"]
     },
     "TFT8_Jinx" : {
         "name":"징크스",
-        "traits" : ["동물특공대","익살꾼"]
+        "traits" : ["Set8_AnimaSquad","Set8_Prankster"]
     },
     "TFT8_Vayne" : {
         "name":"베인",
-        "traits" : ["동물특공대","정찰단","결투가"]
+        "traits" : ["Set8_AnimaSquad","Set8_Recon","Set8_Duelist"]
     },
     "TFT8_MissFortune" : {
         "name":"미스포츈",
-        "traits" : ["에이스","동물특공대"]
+        "traits" : ["Set8_Ace","Set8_AnimaSquad"]
     },
     "TFT8_Chogath" : {
         "name":"초가스",
-        "traits" : ["위협"]
+        "traits" : ["Set8_Threat"]
     },
     "TFT8_Rammus" : {
         "name":"람머스",
-        "traits" : ["위협"]
+        "traits" : ["Set8_Threat"]
     },
     "TFT8_BelVeth" : {
         "name":"벨베스",
-        "traits" : ["위협"]
+        "traits" : ["Set8_Threat"]
     },
     "TFT8_AurelionSol" : {
         "name":"아우렐리온솔",
-        "traits" : ["위협"]
+        "traits" : ["Set8_Threat"]
     },
     "TFT8_Zac" : {
         "name":"자크",
-        "traits" : ["위협"]
+        "traits" : ["Set8_Threat"]
     },
     "TFT8_Mordekaiser" : {
         "name":"모데카이저",
-        "traits" : ["에이스", "레이저단"]
+        "traits" : ["Set8_Ace", "Set8_SpaceCorps"]
     },
     "TFT8_Leblanc" : {
         "name":"르블랑",
-        "traits" : ["자동방어체계", "해커","주문투척자"]
+        "traits" : ["Set8_Admin", "Set8_Hacker","Set8_Channeler"]
     },
     "TFT8_Sylas" : {
         "name":"사일러스",
-        "traits" : ["동물특공대", "무법자"]
+        "traits" : ["Set8_AnimaSquad", "Set8_Renegade"]
     },
     "TFT8_Camille" : {
         "name":"카밀",
-        "traits" : ["자동방어체계","무법자"]
+        "traits" : ["Set8_Admin","Set8_Renegade"]
     },
     "TFT8_Ezreal" : {
         "name":"이즈리얼",
-        "traits" : ["지하세계","정찰단"]
+        "traits" : ["Set8_UndergroundThe","Set8_Recon"]
     },
     "TFT8_Sona" : {
         "name":"소나",
-        "traits" : ["지하세계", "선의", "주문투척자"]
+        "traits" : ["Set8_UndergroundThe", "Set8_Heart", "Set8_Channeler"]
     },
     "TFT8_Ekko" : {
         "name":"에코",
-        "traits" : ["별 수호자", "방패대","익살꾼"]
+        "traits" : ["Set8_StarGuardian", "Set8_Aegis","Set8_Prankster"]
     },
     "TFT8_Sett" : {
         "name":"세트",
-        "traits" : ["메카: 프라임", "엄호대"]
+        "traits" : ["Set8_ExoPrime", "Set8_GenAE"]
     },
     "TFT8_Janna" : {
         "name":"잔나",
-        "traits" : ["민간인","기상캐스터","주문투척자"]
+        "traits" : ["Set8_Civilian","Set8_Forecaster","Set8_Channeler"]
     },
     "TFT8_Urgot" : {
         "name":"우르곳",
-        "traits" : ["위협"]
+        "traits" : ["Set8_Threat"]
     },
     "TFT8_Syndra" : {
         "name":"신드라",
-        "traits" : ["선의","별 수호자"]
+        "traits" : ["Set8_Heart","Set8_StarGuardian"]
     },
     "TFT8_Fiddlesticks" : {
         "name":"피들스틱",
-        "traits" : ["위협","타락"]
+        "traits" : ["Set8_Threat","Set8_Corrupted"]
     },
     "TFT8_Blitzcrank" : {
         "name":"블리츠크랭크",
-        "traits" : ["자동방어체계", "싸움꾼"]
+        "traits" : ["Set8_Admin", "Set8_Brawler"]
     },
     "TFT8_Renekton" : {
         "name":"레넥톤",
-        "traits" : ["싸움꾼","레이저단"]
+        "traits" : ["Set8_Brawler","Set8_SpaceCorps"]
     },
     "TFT8_Vi" : {
         "name":"바이",
-        "traits" : ["싸움꾼", "방패대","지하세계"]
+        "traits" : ["Set8_Brawler", "Set8_Aegis","Set8_UndergroundThe"]
     },
     "TFT8_LeeSin" : {
         "name":"리신",
-        "traits" : ["선의","싸움꾼"]
+        "traits" : ["Set8_Heart","Set8_Brawler"]
     },
     "TFT8_Riven" : {
         "name":"리븐",
-        "traits" : ["동물특공대", "싸움꾼", "엄호대"]
+        "traits" : ["Set8_AnimaSquad", "Set8_Brawler", "Set8_GenAE"]
     },
     "TFT8_Jax" : {
         "name":"잭스",
-        "traits" : ["메카: 프라임", "싸움꾼"]
+        "traits" : ["Set8_ExoPrime", "Set8_Brawler"]
     },
     "TFT8_Sejuani" : {
         "name":"세주아니",
-        "traits" : ["싸움꾼", "레이저단"]
+        "traits" : ["Set8_Brawler", "Set8_SpaceCorps"]
     },
     "TFT8_Soraka" : {
         "name":"소라카",
-        "traits" : ["자동방어체계", "선의"]
+        "traits" : ["Set8_Admin", "Set8_Heart"]
     },
     "TFT8_Talon" : {
         "name":"탈론",
-        "traits" : ["황소부대", "무법자"]
+        "traits" : ["Set8_OxForce", "Set8_Renegade"]
     },
     "TFT8_Fiora" : {
         "name":"피오라",
-        "traits" : ["황소부대", "결투가"]
+        "traits" : ["Set8_OxForce", "Set8_Duelist"]
     },
     "TFT8_Annie" : {
         "name":"애니",
-        "traits" : ["황소부대", "기계유망주", "주문투척자"]
+        "traits" : ["Set8_OxForce", "Set8_GenAE", "Set8_Channeler"]
     },
     "TFT8_Alistar" : {
         "name":"알리스타",
-        "traits" : ["황소부대", "마스코트", "방패대"]
+        "traits" : ["Set8_OxForce", "Set8_Mascot", "Set8_Aegis"]
     },
     "TFT8_Viego" : {
         "name":"비에고",
-        "traits" : ["황소부대", "무법자"]
+        "traits" : ["Set8_OxForce", "Set8_Renegade"]
     },
     "TFT8_Samira" : {
         "name":"사미라",
-        "traits" : ["에이스", "지하세계","특등사수"]
+        "traits" : ["Set8_Ace", "Set8_UndergroundThe","Set8_Deadeye"]
     },
     "TFT8_Aphelios" : {
         "name":"아펠리오스",
-        "traits" : ["황소부대", "특등사수", "병기고"]
+        "traits" : ["Set8_OxForce", "Set8_Deadeye", "Set8_Arsenal"]
     },
     "TFT8_Leona" : {
         "name":"레오나",
-        "traits" : ["메카: 프라임", "무법자", "방패대"]
+        "traits" : ["Set8_ExoPrime", "Set8_Renegade", "Set8_Aegis"]
     },
     }
 
-    aug = {
-        ""
-    }
     if how == "name":
         return champ[name]["name"]
     elif how == "traits":
@@ -353,7 +349,7 @@ class Command(BaseCommand):
             tra = {
                 }
             for trait in Counter(traits).most_common():
-                if trait[0] == "기계유망주":
+                if trait[0] == "Set8_GenAE":
                     if trait[1] < 5 and trait[1] >= 3:
                         tier = 1
                     elif trait[1] >= 5:
@@ -361,7 +357,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
 
-                elif trait[0] == "동물특공대":
+                elif trait[0] == "Set8_AnimaSquad":
                     if trait[1] >= 3 and trait[1] < 5:
                         tier = 1
                     elif trait[1] >= 5 and trait[1] < 7:
@@ -371,7 +367,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
 
-                elif trait[0] == "레이저단":
+                elif trait[0] == "Set8_SpaceCorps":
                     if trait[1] >= 3 and trait[1] < 5:
                         tier = 1
                     elif trait[1] >= 5 and trait[1] <7:
@@ -383,7 +379,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
 
-                elif trait[0] == "메카: 프라임":
+                elif trait[0] == "Set8_ExoPrime":
                     if trait[1] >= 3 and trait[1] < 5:
                         tier = 1
                     elif trait[1] >= 5:
@@ -391,7 +387,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
                         
-                elif trait[0] == "민간인":
+                elif trait[0] == "Set8_Civilian":
                     if trait[1] == 1:
                         tier = 1
                     elif trait[1] == 2:
@@ -401,7 +397,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
                 
-                elif trait[0] == "별 수호자":
+                elif trait[0] == "Set8_StarGuardian":
                     if trait[1] >= 3 and trait[1] < 5:
                         tier = 1
                     elif trait[1] >= 5 and trait[1] < 7:
@@ -413,19 +409,19 @@ class Command(BaseCommand):
                     else:
                         tier = 0
 
-                elif trait[0] == "병기고":
+                elif trait[0] == "Set8_Arsenal":
                     tier = 3
 
-                elif trait[0] == "우세":
+                elif trait[0] == "Set8_Supers":
                     if trait[1] >= 3: 
                         tier = 3
                     else:
                         tier = 0
 
-                elif trait[0] == "위협":
+                elif trait[0] == "Set8_Threat":
                     tier = 3
 
-                elif trait[0] == "자동방어체계":
+                elif trait[0] == "Set8_Admin":
                     if trait[1] >= 2 and trait[1] < 4:
                         tier = 1
                     elif trait[1] >= 4 and trait[1] < 6:
@@ -435,7 +431,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
 
-                elif trait[0] == "지하세계":
+                elif trait[0] == "Set8_UndergroundThe":
                     if trait[1] >= 3 and trait[1] < 4:
                         tier = 1
                     elif trait[1] >= 4 and trait[1] < 5:
@@ -447,7 +443,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
                         
-                elif trait[0] == "황소부대":
+                elif trait[0] == "Set8_OxForce":
                     if trait[1] >= 2 and trait[1] < 4:
                         tier = 1
                     elif trait[1] >= 4 and trait[1] < 6:
@@ -459,7 +455,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
                 
-                elif trait[0] == "결투가":
+                elif trait[0] == "Set8_Duelist":
                     if trait[1] >= 2 and trait[1] < 4:
                         tier = 1
                     elif trait[1] >= 4 and trait[1] < 6:
@@ -471,10 +467,10 @@ class Command(BaseCommand):
                     else:
                         tier = 0
 
-                elif trait[0] == "기상캐스터":
+                elif trait[0] == "Set8_Forecaster":
                     tier = 3
 
-                elif trait[0] == "마스코트":
+                elif trait[0] == "Set8_Mascot":
                     if trait[1] >= 2 and trait[1] < 4:
                         tier = 1
                     elif trait[1] >= 4 and trait[1] < 6:
@@ -486,7 +482,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
 
-                elif trait[0] == "무법자":
+                elif trait[0] == "Set8_Renegade":
                     if trait[1] >= 3 and trait[1] < 6:
                         tier = 3
                     elif trait[1] >= 6:
@@ -494,7 +490,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
 
-                elif trait[0] == "방패대":
+                elif trait[0] == "Set8_Aegis":
                     if trait[1] >= 2 and trait[1] < 3:
                         tier = 1
                     elif trait[1] >= 3 and trait[1] < 4:
@@ -506,7 +502,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
 
-                elif trait[0] == "선의":
+                elif trait[0] == "Set8_Heart":
                     if trait[1] >= 2 and trait[1] < 4:
                         tier = 1
                     elif trait[1] >= 4 and trait[1] < 6:
@@ -516,7 +512,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
 
-                elif trait[0] == "싸움꾼":
+                elif trait[0] == "Set8_Brawler":
                     if trait[1] >= 2 and trait[1] < 4:
                         tier = 1
                     elif trait[1] >= 4 and trait[1] < 6:
@@ -528,7 +524,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
 
-                elif trait[0] == "엄호대":
+                elif trait[0] == "Set8_Defender":
                     if trait[1] >= 2 and trait[1] < 4:
                         tier = 1
                     elif trait[1] >= 4 and trait[1] < 6:
@@ -538,7 +534,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
 
-                elif trait[0] == "에이스":
+                elif trait[0] == "Set8_Ace":
                     if trait[1] == 1:
                         tier = 1
                     elif trait[1] >= 2 and trait[1] < 4:
@@ -548,7 +544,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
                         
-                elif trait[0] == "익살꾼":
+                elif trait[0] == "Set8_Prankster":
                     if trait[1] >= 2 and trait[1] < 3:
                         tier = 1
                     elif trait[1] >= 3:
@@ -556,7 +552,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
                         
-                elif trait[0] == "정찰단":
+                elif trait[0] == "Set8_Recon":
                     if trait[1] >= 2  and trait[1] < 3:
                         tier = 1
                     elif trait[1] >= 3 and trait[1] < 4:
@@ -566,7 +562,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
 
-                elif trait[0] == "주문투척자":
+                elif trait[0] == "Set8_Channeler":
                     if trait[1] >= 2 and trait[1] < 4:
                         tier = 1
                     elif trait[1] >= 4 and trait[1] < 6:
@@ -578,10 +574,10 @@ class Command(BaseCommand):
                     else:
                         tier = 0
                 
-                elif trait[0] == "타락":
+                elif trait[0] == "Set8_Corrupted":
                     tier = 3
 
-                elif trait[0] == "특등사수":
+                elif trait[0] == "Set8_Deadeye":
                     if trait[1] >= 2 and trait[1] < 4:
                         tier = 1
                     elif trait[1] >= 4:
@@ -589,7 +585,7 @@ class Command(BaseCommand):
                     else:
                         tier = 0
                     
-                elif trait[0] == "해커":
+                elif trait[0] == "Set8_Hacker":
                     if trait[1] >= 2 and trait[1] < 3:
                         tier = 1
                     elif trait[1] >= 3 and trait[1] < 4:
