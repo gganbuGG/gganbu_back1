@@ -258,7 +258,7 @@ class SummonerSerializer(serializers.ModelSerializer) :
         fields = ('name', 'profileIcon', 'tier', 'LP', 'winrate', 'game_num', 'win', 'lose' )
 
     def getProfileIcon(self,obj):
-        url = f"http://gganbuback1.pythonanywhere.com/static/profileicon/{obj.profileIconID}.png"
+        url = f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/profileicon/{obj.profileIconID}.png"
         return url
 
 class ChampionSerializer(serializers.ModelSerializer) :
@@ -289,9 +289,9 @@ class ChampionSerializer(serializers.ModelSerializer) :
         i = dict()
         for item in Counter(obj.items).most_common(5):
             if (item[0])[:17] == "TFT8_EmblemItems/":
-                i[itemName[item[0]]["name"]] = f"http://gganbuback1.pythonanywhere.com/static/tft-item/{(item[0])[17:]}.png"
+                i[itemName[item[0]]["name"]] = f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-item/{(item[0])[17:]}.png"
             else:
-                i[itemName[item[0]]["name"]] = f"http://gganbuback1.pythonanywhere.com/static/tft-item/{item[0]}.png"
+                i[itemName[item[0]]["name"]] = f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-item/{item[0]}.png"
             
         return i
     
@@ -305,16 +305,16 @@ class ChampionSerializer(serializers.ModelSerializer) :
         return t
 
     def getbigimg(self, obj):
-        url = f"http://gganbuback1.pythonanywhere.com/static/tft-champion/{obj.name}.TFT_Set8.png"
+        url = f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-champion/{obj.name}.TFT_Set8.png"
         return url
 
 
     def getsmallimg(self, obj):
-        url = f"http://gganbuback1.pythonanywhere.com/static/tft-hero-augment/{obj.name}.TFT_Set8.png"
+        url = f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{obj.name}.TFT_Set8.png"
         return url
 
 class OneDeckSerializer(serializers.ModelSerializer) :
-    augments = serializers.SerializerMethodField('getKaug')
+    augments = serializers.SerializerMethodField('getAug')
     units = serializers.SerializerMethodField('getKunit')
     core = serializers.SerializerMethodField('getKcore')
 
@@ -323,11 +323,9 @@ class OneDeckSerializer(serializers.ModelSerializer) :
         fields = ('winrate', 'windefencerate', 'avgplace', 'units', 'core', 'augments', 'traits')
 
     
-    def getKaug(self, obj):
-        augments = []
-        for a in obj.augments:
-            augments.append(EtoK(a))
-        return augments
+    def getAug(self, obj):
+        obj.augments + obj.h_aug
+        # 수정해야함
     
     def getKunit(self, obj):
         units = []
