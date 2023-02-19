@@ -55,3 +55,8 @@ class Deck(Update):
     augments = models.JSONField(null=True)
     traits = models.JSONField(null=True)
     h_aug = models.CharField(max_length=30, null = True)
+
+class StandardDeck(Update):
+    units = models.JSONField(null=True)
+    fre = models.IntegerField(null=True)
+    partner = models.JSONField(null=True)
