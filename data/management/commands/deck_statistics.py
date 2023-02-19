@@ -299,6 +299,7 @@ class Command(BaseCommand):
                 combs.append(Comb(un1, deckdata.augments1, deckdata.placement, deckdata.coreunits1, deckdata.H_aug1))
                 combs.append(Comb(un2, deckdata.augments2, deckdata.placement, deckdata.coreunits2, deckdata.H_aug2))
 
+        Deck.objects.all().order_by('-updated_time').delete()
         unitstring = []
         for comb in combs:
             unitstring.append(str(comb.units))

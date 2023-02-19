@@ -403,11 +403,14 @@ class OneDeckSerializer(serializers.ModelSerializer) :
         f.close()
         traits = []
         for key in obj.traits.keys():
-            ima = traitName[key]["image"]["full"]
+            ima = traitName[key]["name"]
+            if ima == "메카:프라임":
+                ima = "메카%20프라임"
             tr = {
                 "name" : traitName[key]["name"],
                 "count" : obj.traits[key],
-                "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-trait/{ima}"
+                "img" : f"https://cdn.jsdelivr.net/gh/gganbuGG/gganbu_front/src/images/Synergy/{ima}.svg"
+                
             }
             traits.append(tr)
 
