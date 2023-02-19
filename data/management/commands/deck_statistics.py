@@ -276,30 +276,19 @@ class Command(BaseCommand):
         
         """
         deckDatas = DeckData.objects.all().order_by('-updated_time')
-        d_time = Deck.objects.all().order_by('-updated_time')
-        
-        if not d_time:
-            d_time = '2023-01-01 00:00:00'
-        else :
-            d_time = str(DeckData.objects.all().order_by('-updated_time')[0].updated_time)[:19]
-        
-        d_time = convert_unixtime(d_time)
-   
+        Deck.objects.all().order_by('-updated_time').delete()
         combs = []
         for deckdata in deckDatas:
-            if d_time > convert_unixtime(str(deckdata.updated_time)[:19]):
-                continue
-            else :
-                un1 = []
-                for u in deckdata.units1:
-                    un1.append(u["character_id"])
-                un2 = []
-                for u in deckdata.units2:
-                    un2.append(u["character_id"])
-                combs.append(Comb(un1, deckdata.augments1, deckdata.placement, deckdata.coreunits1, deckdata.H_aug1))
-                combs.append(Comb(un2, deckdata.augments2, deckdata.placement, deckdata.coreunits2, deckdata.H_aug2))
+            un1 = []
+            for u in deckdata.units1:
+                un1.append(u["character_id"])
+            un2 = []
+            for u in deckdata.units2:
+                un2.append(u["character_id"])
+            combs.append(Comb(un1, deckdata.augments1, deckdata.placement, deckdata.coreunits1, deckdata.H_aug1))
+            combs.append(Comb(un2, deckdata.augments2, deckdata.placement, deckdata.coreunits2, deckdata.H_aug2))
 
-        Deck.objects.all().order_by('-updated_time').delete()
+        
         unitstring = []
         for comb in combs:
             unitstring.append(str(comb.units))
