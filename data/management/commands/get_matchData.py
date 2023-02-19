@@ -2,7 +2,10 @@ from django.core.management.base import BaseCommand
 import requests
 import time
 from data.models import Match, Summoner_rank, DeckData
-import json
+import json, os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
 def convert_unixtime(date_time):
     """Convert datetime to unixtime"""
@@ -113,13 +116,14 @@ class Group:
 
 def match2deck():
     #tft정보 (한글로 바꾸기)
-    with open('tft-champion.json', 'r', encoding='UTF8') as f:
-        championName = json.load(f)["data"]
-    with open('tft-augments.json', 'r', encoding='UTF8') as f:
-        augmentName = json.load(f)["data"]
-    with open('tft-hero-augments.json', 'r', encoding='UTF8') as f:
-        heroAugmentName = json.load(f)["data"]
-    
+    ag = os.path.join(BASE_DIR, 'tft-augments.json')
+    with open(ag, 'r', encoding='UTF8') as f1:
+        augmentName = json.load(f1)["data"]
+    f1.close()
+    he = os.path.join(BASE_DIR, 'tft-hero-augments.json')
+    with open(he, 'r', encoding='UTF8') as f2:
+        heroAugmentName = json.load(f2)["data"]
+    f2.close()
     matchs = Match.objects.all().order_by('-updated_time')
     decks = DeckData.objects.all().order_by('-updated_time')
     if not decks:
@@ -142,17 +146,17 @@ def match2deck():
                 units = player["units"]
                 for unit in player["units"]:
                     if len(unit["itemNames"]) == 3 and ("TFT_Item_ThiefsGloves" not in unit["character_id"] or "TFT_Item_EmptyBag" not in unit["itemNames"]):
-                        core.append(championName[unit["character_id"]]["name"])
+                        core.append(unit["character_id"])
                     
                 augments = []
                 for augment in player["augments"]:
                     try :
-                        a = augmentName[augment]["name"]
-                        augments.append(a)
+                        a = augmentName[augment]
+                        augments.append(augment)
                     except KeyError:    
                         #영웅 증강 따로 저장
-                        a = heroAugmentName[augment]["name"]
-                        h_aug = a
+                        a = heroAugmentName[augment]
+                        h_aug = augment
                 placement = player["placement"]
                 if placement == 1 or placement == 2:
                     placement = 1

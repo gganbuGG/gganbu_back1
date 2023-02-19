@@ -1,6 +1,5 @@
 from django.core.management.base import BaseCommand
 from data.models import DeckData, Champion
-import json
 
 def convert_unixtime(date_time):
     """Convert datetime to unixtime"""
