@@ -417,6 +417,7 @@ class OneDeckSerializer(serializers.ModelSerializer) :
         return traits
 
 class StandardSynergySerializer(serializers.ModelSerializer) :
+    # winrate 0 인거는 버릴까
     partnerDeck = serializers.SerializerMethodField('get_partnerDeck')
     units = serializers.SerializerMethodField('getKunit')
     class Meta :
