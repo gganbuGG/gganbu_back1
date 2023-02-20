@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from data.views import SummonerAPI, ChampionAPI, OneDeckAPI_winrate, OneDeckAPI_windefencerate, OneDeckAPI_avgplace
+from data.views import SummonerAPI, ChampionAPI, OneDeckAPI_winrate, OneDeckAPI_windefencerate, OneDeckAPI_avgplace, SynergyAPI_winrate
 from data import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/onedeck/winrate/',OneDeckAPI_winrate.as_view()),
     path('api/onedeck/windefencerate/',OneDeckAPI_windefencerate.as_view()),
     path('api/onedeck/avgplace/',OneDeckAPI_avgplace.as_view()),
+    path('api/synergy/winrate/',SynergyAPI_winrate.as_view()),
     path('riot.txt/', views.riot),
     path('',views.info )
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
