@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Summoner_rank, Champion, Deck
+from .models import Summoner_rank, Champion, Deck, Synergy, StandardDeck
 from collections import Counter
 import json, os
 from pathlib import Path
@@ -415,3 +415,51 @@ class OneDeckSerializer(serializers.ModelSerializer) :
             traits.append(tr)
 
         return traits
+
+class StandardSynergySerializer(serializers.ModelSerializer) :
+    partnerDeck = serializers.SerializerMethodField('get_partnerDeck')
+    units = serializers.SerializerMethodField('getKunit')
+    class Meta :
+        model = StandardDeck
+        fields = ('units', 'partnerDeck')
+
+    def getKunit(self, obj):
+        pa = os.path.join(BASE_DIR, 'tft-champion.json')
+        with open(pa, 'r', encoding='UTF8') as f:
+            championName = json.load(f)["data"]
+        f.close()
+        units = []
+        for i in obj.units:
+            ima = championName[i]["image"]["full"]
+            temp = {
+                "name" : championName[i]["name"],
+                "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{ima}"
+            }
+            units.append(temp)
+        return units
+    
+    def get_partnerDeck(self, obj):
+        syns = Synergy.objects.filter(stand = obj.id).order_by('-winrate')[:3]
+        t = []
+        
+        for syn in syns:
+            units = []
+            for i in syn.units:
+                pa = os.path.join(BASE_DIR, 'tft-champion.json')
+                with open(pa, 'r', encoding='UTF8') as f:
+                    championName = json.load(f)["data"]
+                f.close()
+                ima = championName[i]["image"]["full"]
+                temp = {
+                    "name" : championName[i]["name"],
+                    "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{ima}"
+                }
+                units.append(temp)
+            d = {
+                "units" : units,
+                "winrate" : syn.winrate,
+                "windefencerate" : syn.windefencerate,
+                "avgplace" : syn.avgplace
+            }
+            t.append(d)
+        return t

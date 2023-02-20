@@ -59,4 +59,16 @@ class Deck(Update):
 class StandardDeck(Update):
     units = models.JSONField(null=True)
     fre = models.IntegerField(null=True)
-    partner = models.JSONField(null=True)
+
+class PartnerDeck(Update):
+    #파트너 덱은 1. 니부모가 뭐냐, 몇등이었냐, 전체 몇번나왔냐, 유닛은 뭐썼냐
+    stand  = models.ForeignKey(StandardDeck, on_delete=models.CASCADE)
+    placement = models.IntegerField(null=True)
+    units = models.JSONField(null=True)
+
+class Synergy(Update):
+    stand = models.ForeignKey(StandardDeck, on_delete=models.CASCADE)
+    winrate = models.FloatField(max_length=30, null=True)
+    windefencerate = models.FloatField(max_length=30, null=True)
+    avgplace = models.FloatField(max_length=30, null=True)
+    units = models.JSONField(null=True)

@@ -1,4 +1,4 @@
-from data.models import DeckData, Deck, StandardDeck
+from data.models import DeckData, Deck, StandardDeck, PartnerDeck, Synergy
 from django.core.management.base import BaseCommand
 from bs4 import BeautifulSoup
 import requests
@@ -58,6 +58,8 @@ def getSite():
                     unit = 'Leblanc'
                 elif unit == "Aurelion Sol":
                     unit = 'AurelionSol'
+                elif unit == "Wukong":
+                    unit = "WuKong"
                 sublst.append("TFT8_"+unit)
             lst.append(sublst)
         return lst
@@ -81,6 +83,12 @@ def isDeck(standard, tdata):
             return [False, None]
 
 
+class Win:
+    def __init__(self, placement, units1, units2):
+        self.placement = placement
+        self.units1 = units1
+        self.units2 = units2
+
 def compareDeck(lst):
 
     def addDeck(standard, lst):
@@ -99,10 +107,23 @@ def compareDeck(lst):
     for deckdata in deckdatas:
         for i in addDeck(lst, deckdata.units1):
             for j in addDeck(lst, deckdata.units2):
-                A.append([i,j])
-    A.sort()
+                s = [i ,j]
+                s.sort()
+                w = Win(deckdata.placement, s[0] ,s[1])
+                A.append(w)
     return A
 
+
+def makeDeck(syn):
+    t = []
+    for s in syn:
+        t.append(str(s))
+    c = Counter(t).most_common()
+    temp = []
+    for p in c:
+        if p[1] >= 10:
+            temp.append(p[0].lstrip("['").rstrip("']").split("', '"))
+    return temp
 class Command(BaseCommand):
     
     def handle(self, *args, **kwargs):
@@ -124,40 +145,54 @@ class Command(BaseCommand):
             sd = StandardDeck(units = sta, fre = 0)
             sd.save()
         
+        pDeck = PartnerDeck.objects.all()
+        pDeck.delete()
         #기준이랑 비교해서 모델에 저장
         for comb in compareDeck(standard):
-            deck = StandardDeck.objects.filter(units = comb[0])
+            deck = StandardDeck.objects.filter(units = comb.units1)
             if not deck:
                 print("기준덱에서 찾지 못하는 에러")
                 return KeyError
             else:
                 deck = deck[0]
                 deck.fre += 1
-                temp = []
-                if deck.partner:
-                    for i in deck.partner:
-                        temp.append(i)
-                p = StandardDeck.objects.filter(units = comb[1])
+                p = StandardDeck.objects.filter(units = comb.units2)
                 if not p:
                     print("기준덱에서 찾지 못하는 에러")
                     return KeyError
                 else:
                     p = p[0]
-                    temp.append(p.units)
-                    deck.partner = temp
-                deck.save()
-        
-        #모델에 저장한 파트너 배열을 모델에서 찾아서 partner필드에 쿼리id저장
-        a = StandardDeck.objects.all().order_by('-updated_time')
-        for i in a:
-            temp = []
-            for t in i.partner:
-                temp.append(str(t))
+                    p.fre += 1
+                    p.save()
 
-            c = Counter(temp).most_common(3)
-            d = []
-            for p in c:
-                t = p[0].lstrip("['").rstrip("']").split("', '")
-                d.append(StandardDeck.objects.filter(units = t)[0].id)
-            i.partner = d
-            i.save()
+                    #파트너 덱은 1. 니부모가 뭐냐, 몇등이었냐, 전체 몇번나왔냐, 유닛은 뭐썼냐
+                    pd = PartnerDeck(stand = deck, placement = comb.placement, units = p.units)
+                    pd.save()
+                deck.save()
+        """
+        #모델에 저장한 파트너 배열을 모델에서 찾아서 
+
+        """
+        sy = Synergy.objects.all()
+        sy.delete()
+        for man in StandardDeck.objects.all().order_by('-updated_time'):
+            syn = []
+            for woman in PartnerDeck.objects.filter(stand = man.id):
+                syn.append(woman.units)
+            decks = makeDeck(syn)
+            for deck in decks:
+                win = 0
+                winde = 0
+                avg = 0
+                data = PartnerDeck.objects.filter(units = deck, stand = man.id)
+                all = len(data)
+                for d in data:
+                    if d.placement == 1:
+                        win += 1
+                    if d.placement <= 2:
+                        winde+=1
+                    avg += d.placement
+                s = Synergy(stand = man, winrate = round((win/all)*100, 1), windefencerate = round((winde/all)*100, 1), avgplace = round(avg/all, 1), units = deck)
+                s.save()
+
+        
