@@ -46,6 +46,7 @@ class DeckData(Update):
     H_aug1 = models.CharField(max_length=30, null = True)
     H_aug2 = models.CharField(max_length=30, null = True)
 class StandardDeck(Update):
+    name = models.CharField(max_length=30, null = True)
     units = models.JSONField(null=True)
     coreunits = models.JSONField(null=True)
     augments= models.JSONField(null=True)

@@ -331,7 +331,7 @@ class OneDeckSerializer(serializers.ModelSerializer) :
 
     class Meta :
         model = StandardDeck
-        fields = ( 'traits', 'core', 'units', 'augments', 'winrate', 'windefencerate', 'avgplace' )
+        fields = ('name', 'traits', 'core', 'units', 'augments', 'winrate', 'windefencerate', 'avgplace' )
 
     
     # champion 데이터 검색으로 찾자
