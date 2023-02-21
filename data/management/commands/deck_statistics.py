@@ -595,8 +595,19 @@ class Command(BaseCommand):
             #t = sorted(tra.items(), key=lambda x: x[1])
             t = sorted(list(tra.items()), key= lambda x: x[1]["tier"], reverse=True)
             d = {}
+            t=list(t)
+            idx = 0
             for temp in t:
-                d[temp[0]] = temp[1]["count"]
+                temp = list(temp)
+                if temp[1]["tier"] == 0:
+                    del t[idx]
+                    continue
+                sy = {
+                    "tier" : temp[1]["tier"],
+                    "count" : temp[1]["count"]
+                }
+                d[temp[0]] = sy
+                idx+=1
 
             d = Deck(winrate = round(((one * deck[1])/len(deckDatas))*100, 1), windefencerate = round(((defence * deck[1])/len(deckDatas))*100,1), avgplace = round(pl/deck[1],1), units = units, augments = ag, traits = d,core= core, h_aug = hag)
             d.save()
