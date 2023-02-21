@@ -268,10 +268,11 @@ class ChampionSerializer(serializers.ModelSerializer) :
     tier = serializers.SerializerMethodField('getTierData')
     bigimg = serializers.SerializerMethodField('getbigimg')
     smallimg = serializers.SerializerMethodField('getsmallimg')
+    bgimg = serializers.SerializerMethodField('getbgimg')
 
     class Meta :
         model = Champion
-        fields = ('name', 'items', 'rarity', 'tier', 'bigimg', 'smallimg')
+        fields = ('name', 'items', 'rarity', 'tier', 'bigimg', 'smallimg', 'bgimg')
     
     def getKname(self,obj):
             
@@ -312,7 +313,15 @@ class ChampionSerializer(serializers.ModelSerializer) :
 
 
     def getsmallimg(self, obj):
+        if obj.name == "TFT8_WuKong":
+            obj.name = "TFT8_Wukong"
         url = f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{obj.name}.TFT_Set8.png"
+        return url
+
+    def getbgimg(self, obj):
+        if obj.name == "TFT8_WuKong":
+            obj.name = "TFT8_Wukong"
+        url = f"https://cdn.jsdelivr.net/gh/gganbuGG/gganbu_front/src/images/ChampionBackGround/{str(obj.name)[5:]}.jpg"
         return url
 
 class OneDeckSerializer(serializers.ModelSerializer) :
@@ -406,10 +415,19 @@ class OneDeckSerializer(serializers.ModelSerializer) :
             ima = traitName[key]["name"]
             if ima == "메카:프라임":
                 ima = "메카%20프라임"
+            if obj.traits[key]["tier"] == 1:
+                tier = "bronze"
+            elif obj.traits[key]["tier"] == 2:
+                tier = "silver"
+            elif obj.traits[key]["tier"] == 3:
+                tier = "gold"
+            elif obj.traits[key]["tier"] == 1:
+                tier = "platinum"
             tr = {
                 "name" : traitName[key]["name"],
-                "count" : obj.traits[key],
-                "img" : f"https://cdn.jsdelivr.net/gh/gganbuGG/gganbu_front/src/images/Synergy/{ima}.svg"
+                "count" : obj.traits[key]["count"],
+                "img" : f"https://cdn.jsdelivr.net/gh/gganbuGG/gganbu_front/src/images/Synergy/{ima}.svg",
+                "bgimg" : f"https://cdn.jsdelivr.net/gh/gganbuGG/gganbu_front/src/images/Synergy/Tile/{tier}.svg"
                 
             }
             traits.append(tr)
@@ -451,6 +469,8 @@ class StandardSynergySerializer(serializers.ModelSerializer) :
                     championName = json.load(f)["data"]
                 f.close()
                 ima = championName[i]["image"]["full"]
+                if ima == "TFT8_WuKong.TFT_Set8.png":
+                    ima = "TFT8_Wukong.TFT_Set8.png"
                 temp = {
                     "name" : championName[i]["name"],
                     "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{ima}"
