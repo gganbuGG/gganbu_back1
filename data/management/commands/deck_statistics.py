@@ -1,7 +1,9 @@
-from data.models import DeckData,Deck
+from data.models import DeckData,StandardDeck
 from django.core.management.base import BaseCommand
 from collections import Counter
 from pathlib import Path
+from bs4 import BeautifulSoup
+import requests
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -259,21 +261,204 @@ def korean(name, how):
     elif how == "traits":
         return champ[name]["traits"]
 
-class Comb():
-    def __init__(self, units, augments, placement, core, h_aug):
-        self.units = units
-        self.augments = augments
-        self.placement = placement
-        self.core = core
-        self.h_aug = h_aug
+def getSite():
+    #영문 사이트 크롤링
+    url = 'https://lolchess.gg/meta?hl=en-US'
 
+    response = requests.get(url)
+    #크롤링
+    if response.status_code == 200:
+        html = response.text
+        soup = BeautifulSoup(html, 'html.parser')
+        tbody = soup.select('#wrapper > div.container-full > div.guide-meta.mt-4 > div.guide-meta__group.tier-S > div.guide-meta__group__content > div.guide-meta__deck-box')
+        
+        lst = []
+        #덱 마다 살펴보기
+        for deck in tbody:
+            sublst = [] # 유닛 목록 저장
+            cores = [] # 코어챔피언 목록 저장
+            score = 0 #가중치 기준 저장
+            tr = deck.select('div.guide-meta__deck-box > div > div.guide-meta__deck__column.champions.mr-2 > div.tft-champion-box')
+            for c in tr:
+                unit = c.select_one('div > span.name').get_text()
+                if unit == "Kai'Sa":
+                    unit = "Kaisa"
+                elif unit == "Cho'Gath":
+                    unit = 'Chogath'
+                elif unit == "Lee Sin":
+                    unit = 'LeeSin'
+                elif unit == "LeBlanc":
+                    unit = 'Leblanc'
+                elif unit == "Aurelion Sol":
+                    unit = 'AurelionSol'
+                elif unit == "Wukong":
+                    unit = "WuKong"
+
+                score += 20
+
+                #아이템 개수 저장
+                items_len = len(c.select("div.tft-items > img"))
+                if items_len >= 1:
+                    cores.append(["TFT8_"+unit, items_len])
+                    score += 10 * items_len
+                
+                sublst.append("TFT8_"+unit)
+
+            s = StandardDeck(units = sublst, coreunits = cores, fre = 0, score = score)
+            s.save()
+
+def compareStandard():
+
+    standard = StandardDeck.objects.all()
+    deckdata = DeckData.objects.all()
+
+    #저장된 덱이 어느 덱에 속하는지 판별하고 등수, 증강체 저장
+    for deck in deckdata:
+
+        #units1 검사
+        for stand in standard:
+            score = 0
+            for unit in deck.units1:
+                cores = stand.coreunits
+                Sunits = stand.units
+                if unit["character_id"] in Sunits:
+                    score += 20
+                    for core in cores:
+                        if unit["character_id"] == core[0]:
+                            score += 10* core[1]
+
+            #점수가 75%이상 이면 같은 덱으로 판별
+            if score >= stand.score * 0.75:
+                stand.fre += 1
+
+                aug = []
+                if stand.augments:
+                    for i in stand.augments:
+                        aug.append(i)
+                for i in deck.augments1:
+                    aug.append(i)
+                stand.augments = aug
+
+                haug = []
+                if stand.H_aug:
+                    for i in stand.H_aug:
+                        haug.append(i)
+                haug.append(deck.H_aug1)
+                stand.H_aug = haug
+
+                placements = []
+                if stand.placement:
+                    for i in stand.placement:
+                        placements.append(i)
+                placements.append(deck.placement)
+                stand.placement = placements
+
+                stand.save()
+
+        #units2 검사
+        for stand in standard:
+            score = 0
+            for unit in deck.units2:
+                cores = stand.coreunits
+                Sunits = stand.units
+                if unit["character_id"] in Sunits:
+                    score += 20
+                    for core in cores:
+                        if unit["character_id"] == core[0]:
+                            score += 10* core[1]
+
+            #점수가 75%이상 이면 같은 덱으로 판별
+            if score >= stand.score * 0.75:
+                stand.fre += 1
+
+                aug = []
+                if stand.augments:
+                    for i in stand.augments:
+                        aug.append(i)
+                for i in deck.augments2:
+                    aug.append(i)
+                stand.augments = aug
+
+                haug = []
+                if stand.H_aug:
+                    for i in stand.H_aug:
+                        haug.append(i)
+                haug.append(deck.H_aug2)
+                stand.H_aug = haug
+
+                placements = []
+                if stand.placement:
+                    for i in stand.placement:
+                        placements.append(i)
+                placements.append(deck.placement)
+                stand.placement = placements
+
+                stand.save()
+
+
+def statisticsOfStandard():
+    standard = StandardDeck.objects.all()
+
+    for stand in standard:
+        c = Counter(stand.augments).most_common(2)
+        stand.augments = [c[0][0], c[1][0]]
+        c = Counter(stand.H_aug).most_common(1)
+        stand.H_aug = [c[0][0]]
+        win = 0
+        windef = 0
+        avg = 0
+        for i in stand.placement:
+            if i == 1:
+                win += 1
+                windef += 1
+            elif i == 2:
+                windef += 1
+            avg+= i
+        stand.winrate = round((win/stand.fre)*100,1)
+        stand.windefencerate = round((windef/stand.fre)*100,1)
+        stand.avgplace = round((avg/stand.fre),1)
+        stand.save()
 
 class Command(BaseCommand):
+    """
+    롤체지지에서 크롤링
+    크롤링 - 유닛들 , 아이템
+    가중치로 덱 판단
+    유닛하나당 기본적으로 20
+    아이템 하나당 10 추가 만약 - 바이 알리스타 사미라 세주아니 에코 레오나 아펠리오스 우르곳 피들스틱
+                                 20   20      50     50     20   20     50       20     40
+    전체 합한거 * 0.75 >= 이면 덱에 포함
+    traits, placement, augments 같이 저장
+
+        기준 덱에 외래키 잡고
+            for deckdata in deckdatas:
+        for i in addDeck(lst, deckdata.units1):
+            for j in addDeck(lst, deckdata.units2):
+                s = [i ,j]
+                s.sort()
+                w = Win(deckdata.placement, s[0] ,s[1])
+                A.append(w)
+    return A
+    이런식으로 파트너 덱도 기준에 맞춰서 순위 augment, item, unit 저장
     
+    """
     def handle(self, *args, **kwargs):
         
-        """
+        #r기존의 데이터 삭제
+        ss = StandardDeck.objects.all()
+        if ss:
+            ss.delete()
         
+        #크롤링해서 데이터 저장
+        getSite()
+
+        #덱데이터랑 비교해서 등수, 증강체배열 저장해두기
+        compareStandard()
+        
+        #기준덱에 배열들 counting해서 승률, 순방률, 평균 등수, 증강체 저장
+        statisticsOfStandard()
+
+
         """
         deckDatas = DeckData.objects.all().order_by('-updated_time')
         Deck.objects.all().order_by('-updated_time').delete()
@@ -611,3 +796,5 @@ class Command(BaseCommand):
 
             d = Deck(winrate = round(((one * deck[1])/len(deckDatas))*100, 1), windefencerate = round(((defence * deck[1])/len(deckDatas))*100,1), avgplace = round(pl/deck[1],1), units = units, augments = ag, traits = d,core= core, h_aug = hag)
             d.save()
+
+        """

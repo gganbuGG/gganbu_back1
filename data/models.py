@@ -45,30 +45,14 @@ class DeckData(Update):
     augments2= models.JSONField(null=True)
     H_aug1 = models.CharField(max_length=30, null = True)
     H_aug2 = models.CharField(max_length=30, null = True)
-
-class Deck(Update):
-    winrate = models.FloatField(max_length=30, null=True)
-    windefencerate = models.FloatField(max_length=30, null=True)
-    avgplace = models.FloatField(max_length=30, null=True)
-    units = models.JSONField(null=True)
-    core = models.JSONField(null=True)
-    augments = models.JSONField(null=True)
-    traits = models.JSONField(null=True)
-    h_aug = models.CharField(max_length=30, null = True)
-
 class StandardDeck(Update):
     units = models.JSONField(null=True)
+    coreunits = models.JSONField(null=True)
+    augments= models.JSONField(null=True)
+    H_aug = models.JSONField(null=True)
     fre = models.IntegerField(null=True)
-
-class PartnerDeck(Update):
-    #파트너 덱은 1. 니부모가 뭐냐, 몇등이었냐, 전체 몇번나왔냐, 유닛은 뭐썼냐
-    stand  = models.ForeignKey(StandardDeck, on_delete=models.CASCADE)
-    placement = models.IntegerField(null=True)
-    units = models.JSONField(null=True)
-
-class Synergy(Update):
-    stand = models.ForeignKey(StandardDeck, on_delete=models.CASCADE)
-    winrate = models.FloatField(max_length=30, null=True)
-    windefencerate = models.FloatField(max_length=30, null=True)
-    avgplace = models.FloatField(max_length=30, null=True)
-    units = models.JSONField(null=True)
+    placement = models.JSONField(null=True)
+    winrate = models.FloatField(null = True)
+    windefencerate = models.FloatField(null = True)
+    avgplace = models.FloatField(null = True)
+    score = models.IntegerField(null=True)
