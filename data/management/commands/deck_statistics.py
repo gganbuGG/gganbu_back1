@@ -274,11 +274,29 @@ def getSite():
         
         lst = []
         #덱 마다 살펴보기
+        idx = 0
         for deck in tbody:
             sublst = [] # 유닛 목록 저장
             cores = [] # 코어챔피언 목록 저장
             score = 0 #가중치 기준 저장
             tr = deck.select('div.guide-meta__deck-box > div > div.guide-meta__deck__column.champions.mr-2 > div.tft-champion-box')
+
+            url = 'https://lolchess.gg/meta?hl=ko-KR'
+
+            response = requests.get(url)
+                #크롤링
+            if response.status_code == 200:
+                html = response.text
+                soup = BeautifulSoup(html, 'html.parser')
+                tbody = soup.select('#wrapper > div.container-full > div.guide-meta.mt-4 > div.guide-meta__group.tier-S > div.guide-meta__group__content > div.guide-meta__deck-box')
+                
+                deck = tbody[idx]
+                try:
+                    name = deck.select_one('div.guide-meta__deck__column.name.mr-3 > span')
+                    name.decompose()
+                    name = deck.select_one('div.guide-meta__deck__column.name.mr-3').get_text().strip()
+                except AttributeError:
+                    name = deck.select_one('div.guide-meta__deck__column.name.mr-3').get_text().strip()
             for c in tr:
                 unit = c.select_one('div > span.name').get_text()
                 if unit == "Kai'Sa":
@@ -304,8 +322,9 @@ def getSite():
                 
                 sublst.append("TFT8_"+unit)
 
-            s = StandardDeck(units = sublst, coreunits = cores, fre = 0, score = score)
+            s = StandardDeck(name = name, units = sublst, coreunits = cores, fre = 0, score = score)
             s.save()
+            idx+=1
 
 def compareStandard():
 
@@ -451,13 +470,13 @@ class Command(BaseCommand):
         
         #크롤링해서 데이터 저장
         getSite()
-
+        
         #덱데이터랑 비교해서 등수, 증강체배열 저장해두기
         compareStandard()
         
         #기준덱에 배열들 counting해서 승률, 순방률, 평균 등수, 증강체 저장
         statisticsOfStandard()
-
+        
 
         """
         deckDatas = DeckData.objects.all().order_by('-updated_time')
