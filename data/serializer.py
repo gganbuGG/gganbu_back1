@@ -367,8 +367,21 @@ class OneDeckSerializer(serializers.ModelSerializer) :
         units = []
         for i in obj.units:
             ima = championName[i]["image"]["full"]
+            r = Champion.objects.get(name = i).rarity
+            if r == 0:
+                cost = 1
+            elif r == 1:
+                cost = 2
+            elif r == 2:
+                cost = 3
+            elif r == 4:
+                cost = 4
+            elif r == 6:
+                cost = 5
+
             temp = {
                 "name" : championName[i]["name"],
+                "cost" : cost,
                 "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{ima}"
             }
             units.append(temp)
