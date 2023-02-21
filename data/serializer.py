@@ -450,6 +450,8 @@ class StandardSynergySerializer(serializers.ModelSerializer) :
         units = []
         for i in obj.units:
             ima = championName[i]["image"]["full"]
+            if ima == "TFT8_WuKong.TFT_Set8.png":
+                    ima = "TFT8_Wukong.TFT_Set8.png"
             temp = {
                 "name" : championName[i]["name"],
                 "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{ima}"
