@@ -57,3 +57,17 @@ class StandardDeck(Update):
     windefencerate = models.FloatField(null = True)
     avgplace = models.FloatField(null = True)
     score = models.IntegerField(null=True)
+
+
+class DoubleDeck(Update):
+    parentsdeck = models.ForeignKey("StandardDeck", on_delete=models.CASCADE, db_column="parents_id")
+    name = models.CharField(max_length=30, null = True)
+    units = models.JSONField(null=True)
+    coreunits = models.JSONField(null=True)
+    augments= models.JSONField(null=True)
+    H_aug = models.JSONField(null=True)
+    fre = models.IntegerField(null=True)
+    placement = models.JSONField(null=True)
+    winrate = models.FloatField(null = True)
+    windefencerate = models.FloatField(null = True)
+    avgplace = models.FloatField(null = True)
