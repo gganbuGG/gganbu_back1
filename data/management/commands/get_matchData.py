@@ -88,7 +88,7 @@ def get_matchData(puuids, API_KEY):
         if len(ids) == 100:
             while True:
                 data = askRiot(f'https://asia.api.riotgames.com/tft/match/v1/matches/{ids[0]}?api_key={API_KEY}')
-                tempEnd = data["info"]["datetime"]
+                tempEnd = data["info"]["game_datetime"]
                 temp = askRiot(f'https://asia.api.riotgames.com/tft/match/v1/matches/by-puuid/{puuid}/ids?start=0&startTime={tempEnd}&count=100&api_key={API_KEY}')
                 ids = ids + temp
                 if len(temp) != 100:
@@ -155,7 +155,6 @@ def match2deck():
                         augments.append(augment)
                     except KeyError:    
                         #영웅 증강 따로 저장
-                        a = heroAugmentName[augment]
                         h_aug = augment
                 placement = player["placement"]
                 if placement == 1 or placement == 2:
