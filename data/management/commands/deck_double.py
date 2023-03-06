@@ -444,8 +444,6 @@ def check_save_double(standarddecks, decks):
     for standarddeck in standarddecks:
         for deck in decks:
             units = [deck.units1,deck.units2]
-            augments = [deck.augments1, deck.augments2]
-            h_augs = [deck.H_aug1, deck.H_aug2]
             scores=[]
             for deckunits in units:
                 score = 0
@@ -483,31 +481,16 @@ def check_save_double(standarddecks, decks):
                             #덱 저장
                             dds = DoubleDeck.objects.filter(parentsdeck = standarddeck)
                             if not dds:
-                                dd = DoubleDeck(parentsdeck = standarddeck, name = pstanddeck.name, units = pstanddeck.units, coreunits = pstanddeck.coreunits, augments = augments[idx], H_aug = h_augs[idx], fre = 1, placement = [deck.placement])
+                                dd = DoubleDeck(parentsdeck = standarddeck, deck_id = pstanddeck.id, fre = 1, placement = [deck.placement])
                                 dd.save()
                             else:
-                                dds = DoubleDeck.objects.filter(name = pstanddeck.name, parentsdeck = standarddeck)
+                                dds = DoubleDeck.objects.filter(deck_id = pstanddeck.id, parentsdeck = standarddeck)
                                 if not dds:
-                                    dd = DoubleDeck(parentsdeck = standarddeck, name = pstanddeck.name, units = pstanddeck.units, coreunits = pstanddeck.coreunits, augments = augments[idx], H_aug = h_augs[idx], fre = 1, placement = [deck.placement])
+                                    dd = DoubleDeck(parentsdeck = standarddeck, deck_id = pstanddeck.id, fre = 1, placement = [deck.placement])
                                     dd.save()
                                     pass
                                 else:
                                     dd=dds[0]
-                                    temp = []
-                                    for i in dd.augments:
-                                        temp.append(i)
-                                    for i in augments[idx]:
-                                        temp.append(i)
-                                    dd.augments = temp
-                                    temp = []
-                                    if  type(dd.H_aug) == list:
-                                        for i in dd.H_aug:
-                                            temp.append(i)
-                                        temp.append(h_augs[idx])
-                                    else:
-                                        temp.append(dd.H_aug)
-                                        temp.append(h_augs[idx])
-                                    dd.H_aug = temp
                                     dd.fre+=1
                                     temp = []
                                     for i in dd.placement:
@@ -529,10 +512,6 @@ def double_statistics(ds):
     for deck in ds:
         if deck.fre < 10:
             continue
-        c = Counter(deck.augments).most_common(2)
-        deck.augments = [c[0][0], c[1][0]]
-        c = Counter(deck.H_aug).most_common(1)
-        deck.H_aug = [c[0][0]]
         win = 0
         windef = 0
         avg = 0
@@ -590,3 +569,8 @@ class Command(BaseCommand):
         double_statistics(ds)
 
         
+        #표본이 10개 미만인 데이터 삭제
+        ds = DoubleDeck.objects.all()
+        for i in ds:
+            if not i.winrate:
+                i.delete()

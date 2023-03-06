@@ -477,7 +477,6 @@ class Command(BaseCommand):
         #기준덱에 배열들 counting해서 승률, 순방률, 평균 등수, 증강체 저장
         statisticsOfStandard()
         
-
         """
         deckDatas = DeckData.objects.all().order_by('-updated_time')
         Deck.objects.all().order_by('-updated_time').delete()
