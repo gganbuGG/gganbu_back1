@@ -988,22 +988,24 @@ class DoubleDeckSerializer(serializers.ModelSerializer) :
     otherdeckavg = serializers.SerializerMethodField('getOtherDeckavg')
     class Meta :
         model = StandardDeck
-        fields = ('name', 'traits', 'core', 'units', 'augments', 'otherdeckwin', 'otherdeckwindef', 'otherdeckavg' )
+        fields = ('id', 'name', 'traits', 'core', 'units', 'augments', 'otherdeckwin', 'otherdeckwindef', 'otherdeckavg' )
 
 
     def getOtherDeckwin(self, obj):
         decks = DoubleDeck.objects.filter(parentsdeck=obj.id).order_by("-winrate")
 
         otherdecks = []
-
+        idx = 0
         for i in decks:
-
+            if idx > 3:
+                break
             data = {}
             data["deck_id"] = i.deck_id
             data["winrate"] = i.winrate
             data["windefencerate"] = i.windefencerate
             data["avgplace"] = i.avgplace
             otherdecks.append(data)
+            idx+=1
 
         return otherdecks
 
