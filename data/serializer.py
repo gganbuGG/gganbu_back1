@@ -1014,14 +1014,17 @@ class DoubleDeckSerializer(serializers.ModelSerializer) :
 
         otherdecks = []
 
+        idx = 0
         for i in decks:
-
+            if idx > 3:
+                break
             data = {}
             data["deck_id"] = i.deck_id
             data["winrate"] = i.winrate
             data["windefencerate"] = i.windefencerate
             data["avgplace"] = i.avgplace
             otherdecks.append(data)
+            idx+=1
 
         return otherdecks
     
@@ -1030,14 +1033,17 @@ class DoubleDeckSerializer(serializers.ModelSerializer) :
 
         otherdecks = []
 
+        idx = 0
         for i in decks:
-
+            if idx > 3:
+                break
             data = {}
             data["deck_id"] = i.deck_id
             data["winrate"] = i.winrate
             data["windefencerate"] = i.windefencerate
             data["avgplace"] = i.avgplace
             otherdecks.append(data)
+            idx+=1
 
         return otherdecks
 
