@@ -997,7 +997,7 @@ class DoubleDeckSerializer(serializers.ModelSerializer) :
         otherdecks = []
         idx = 0
         for i in decks:
-            if idx > 3:
+            if idx >= 3:
                 break
             data = {}
             data["deck_id"] = i.deck_id
@@ -1016,7 +1016,7 @@ class DoubleDeckSerializer(serializers.ModelSerializer) :
 
         idx = 0
         for i in decks:
-            if idx > 3:
+            if idx >= 3:
                 break
             data = {}
             data["deck_id"] = i.deck_id
@@ -1035,7 +1035,7 @@ class DoubleDeckSerializer(serializers.ModelSerializer) :
 
         idx = 0
         for i in decks:
-            if idx > 3:
+            if idx >= 3:
                 break
             data = {}
             data["deck_id"] = i.deck_id
