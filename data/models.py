@@ -61,11 +61,7 @@ class StandardDeck(Update):
 
 class DoubleDeck(Update):
     parentsdeck = models.ForeignKey("StandardDeck", on_delete=models.CASCADE, db_column="parents_id")
-    name = models.CharField(max_length=30, null = True)
-    units = models.JSONField(null=True)
-    coreunits = models.JSONField(null=True)
-    augments= models.JSONField(null=True)
-    H_aug = models.JSONField(null=True)
+    deck_id = models.IntegerField(null=True)
     fre = models.IntegerField(null=True)
     placement = models.JSONField(null=True)
     winrate = models.FloatField(null = True)
