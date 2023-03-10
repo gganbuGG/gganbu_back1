@@ -106,7 +106,6 @@ def set_rankerData(TOPs, API_KEY):
             break
 
         data = response.json()
-        print(data)
         puuid = data['puuid']
         name = data['name']
         profileIconId = data['profileIconId']
