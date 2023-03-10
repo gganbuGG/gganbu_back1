@@ -123,3 +123,4 @@ class Command(BaseCommand):
             print(TOPs)
             return 
         set_rankerData(TOPs, API_KEY)
+        print("ranker update is finished")

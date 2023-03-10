@@ -554,6 +554,7 @@ class Command(BaseCommand):
     """
     def handle(self, *args, **kwargs):
         
+        print("deck_double update start")
         #r기존의 데이터 삭제
         ds = DoubleDeck.objects.all()
         ds.delete()
@@ -574,3 +575,5 @@ class Command(BaseCommand):
         for i in ds:
             if not i.winrate:
                 i.delete()
+        
+        print("deck_double update is finished")

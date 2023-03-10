@@ -187,5 +187,7 @@ class Command(BaseCommand):
         API_KEY = get_API_key()
 
         puuids = get_puuids()
+        print("matchData update start")
         get_matchData(puuids, API_KEY)
         match2deck()
+        print("matchData update is finished")

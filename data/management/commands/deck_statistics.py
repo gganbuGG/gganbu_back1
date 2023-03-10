@@ -463,6 +463,7 @@ class Command(BaseCommand):
     """
     def handle(self, *args, **kwargs):
         
+        print("deck statistics update start")
         #r기존의 데이터 삭제
         ss = StandardDeck.objects.all()
         if ss:
@@ -476,6 +477,8 @@ class Command(BaseCommand):
         
         #기준덱에 배열들 counting해서 승률, 순방률, 평균 등수, 증강체 저장
         statisticsOfStandard()
+
+        print("deck statistics update is finished")
         
         """
         deckDatas = DeckData.objects.all().order_by('-updated_time')
