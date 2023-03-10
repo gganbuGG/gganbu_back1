@@ -1,12 +1,16 @@
 import os
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent
 
-terminal_command = "python manage.py update_ranker"
+manage = os.path.join(BASE_DIR, 'manage.py')
+print(manage)
+terminal_command = "python " +manage+ " update_ranker"
 os.system(terminal_command)
-terminal_command = "python manage.py get_matchData"
+terminal_command = "python " +manage+ " get_matchData"
 os.system(terminal_command)
-terminal_command = "python manage.py rank_unit"
+terminal_command = "python " +manage+ " rank_unit"
 os.system(terminal_command)
-terminal_command = "python manage.py deck_statistics"
+terminal_command = "python " +manage+ " deck_statistics"
 os.system(terminal_command)
-terminal_command = "python manage.py deck_double"
+terminal_command = "python " +manage+ " deck_double"
 os.system(terminal_command)
