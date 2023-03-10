@@ -59,7 +59,9 @@ def champ_sta():
 class Command(BaseCommand):
     help = "챔피언 통계(아이템, tier) - 1등한 소환사 팀에서 자주 등장했던 챔피언의 아이템, 티어 통계"
     def handle(self, *args, **kwargs):
+        print("rank_unit update start")
         champ_sta()
+        print("rank_unit update is finished")
 
 
 
