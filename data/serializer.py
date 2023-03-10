@@ -378,12 +378,14 @@ class OneDeckSerializer(serializers.ModelSerializer) :
                 cost = 4
             elif r == 6:
                 cost = 5
-
+            if ima == "TFT8_WuKong.TFT_Set8.png":
+                ima = "TFT8_Wukong.TFT_Set8.png"
             temp = {
                 "name" : championName[i]["name"],
                 "cost" : cost,
                 "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{ima}"
             }
+
             units.append(temp)
         return units
 
@@ -1090,6 +1092,9 @@ class DoubleDeckSerializer(serializers.ModelSerializer) :
                 cost = 4
             elif r == 6:
                 cost = 5
+                
+            if ima == "TFT8_WuKong.TFT_Set8.png":
+                ima = "TFT8_Wukong.TFT_Set8.png"
 
             temp = {
                 "name" : championName[i]["name"],
