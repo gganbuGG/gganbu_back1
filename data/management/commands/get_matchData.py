@@ -15,7 +15,8 @@ def convert_unixtime(date_time):
     return int(unixtime)
 
 def get_API_key():
-    file = open("./riot_API.txt", "r")
+    c = os.path.join(BASE_DIR, 'riot_API.txt')
+    file = open(c, "r")
     API_KEY = file.read()
     file.close()
     return API_KEY

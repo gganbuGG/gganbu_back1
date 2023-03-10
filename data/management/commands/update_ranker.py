@@ -3,6 +3,10 @@ import requests
 from data.models import Summoner_rank
 from bs4 import BeautifulSoup
 import time
+from pathlib import Path
+import os
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
 class Summoner:
     def __init__(self, name, tier, LP, winrate, game_num, win):
@@ -15,7 +19,8 @@ class Summoner:
         self.lose = int(game_num)-int(win)
 
 def get_API_key():
-    file = open("./riot_API.txt", "r")
+    c = os.path.join(BASE_DIR, 'riot_API.txt')
+    file = open(c, "r")
     API_KEY = file.read()
     file.close()
     return API_KEY
@@ -95,9 +100,13 @@ def set_rankerData(TOPs, API_KEY):
             print('you need api renewal')
             print('break')
             break
-
+        
+        elif response.status_code == 404:
+            print('소환사 없음')
+            break
 
         data = response.json()
+        print(data)
         puuid = data['puuid']
         name = data['name']
         profileIconId = data['profileIconId']
