@@ -346,14 +346,29 @@ class OneDeckSerializer(serializers.ModelSerializer) :
         f2.close()
         augs = obj.augments
         aug = []
-        c0 = augmentName[augs[0]]["image"]["full"]
-        c1 = augmentName[augs[1]]["image"]["full"]
-        c2 = haugmentName[obj.H_aug[0]]["image"]["full"]
-        aug.append({"name" : augmentName[augs[0]]["name"],
+        try :
+            c0 = augmentName[augs[0]]["image"]["full"]
+            aug.append({"name" : augmentName[augs[0]]["name"],
         "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-augment/{c0}"})
-        aug.append({"name" : augmentName[augs[1]]["name"],
+        except KeyError:
+            c0 = haugmentName[aug[0]]["image"]["full"]
+            aug.append({"name" : haugmentName[augs[0]]["name"],
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-augment/{c0}"})
+        try:
+            c1 = augmentName[augs[1]]["image"]["full"]
+            aug.append({"name" : augmentName[augs[1]]["name"],
         "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-augment/{c1}"})
-        aug.append({"name" : haugmentName[obj.H_aug[0]]["name"],
+        except KeyError:
+            c1 = haugmentName[augs[1]]["image"]["full"]
+            aug.append({"name" : haugmentName[augs[1]]["name"],
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-augment/{c1}"})
+        try:
+            c2 = haugmentName[obj.H_aug[0]]["image"]["full"]
+            aug.append({"name" : haugmentName[obj.H_aug[0]]["name"],
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{c2}"})
+        except KeyError:
+            c2 = augmentName[obj.H_aug[0]]["image"]["full"]
+            aug.append({"name" : augmentName[obj.H_aug[0]]["name"],
         "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{c2}"})
         
         return aug
@@ -1060,15 +1075,31 @@ class DoubleDeckSerializer(serializers.ModelSerializer) :
         f2.close()
         augs = obj.augments
         aug = []
-        c0 = augmentName[augs[0]]["image"]["full"]
-        c1 = augmentName[augs[1]]["image"]["full"]
-        c2 = haugmentName[obj.H_aug[0]]["image"]["full"]
-        aug.append({"name" : augmentName[augs[0]]["name"],
+        try :
+            c0 = augmentName[augs[0]]["image"]["full"]
+            aug.append({"name" : augmentName[augs[0]]["name"],
         "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-augment/{c0}"})
-        aug.append({"name" : augmentName[augs[1]]["name"],
+        except KeyError:
+            c0 = haugmentName[aug[0]]["image"]["full"]
+            aug.append({"name" : haugmentName[augs[0]]["name"],
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-augment/{c0}"})
+        try:
+            c1 = augmentName[augs[1]]["image"]["full"]
+            aug.append({"name" : augmentName[augs[1]]["name"],
         "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-augment/{c1}"})
-        aug.append({"name" : haugmentName[obj.H_aug[0]]["name"],
+        except KeyError:
+            c1 = haugmentName[augs[1]]["image"]["full"]
+            aug.append({"name" : haugmentName[augs[1]]["name"],
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-augment/{c1}"})
+        try:
+            c2 = haugmentName[obj.H_aug[0]]["image"]["full"]
+            aug.append({"name" : haugmentName[obj.H_aug[0]]["name"],
         "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{c2}"})
+        except KeyError:
+            c2 = augmentName[obj.H_aug[0]]["image"]["full"]
+            aug.append({"name" : augmentName[obj.H_aug[0]]["name"],
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{c2}"})
+
         
         return aug
         
