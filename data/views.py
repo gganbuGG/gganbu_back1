@@ -31,12 +31,12 @@ class SummonerAPI(APIView):
         }
         return Response(serializer)
 
-def riot(request):
-    filename = "riot.txt"
-    content = 'df00023e-6d26-4549-836c-ecfd264c7d78'
-    response = HttpResponse(content, content_type='text/plain')
-    response['Content-Disposition'] = 'attachment; filename={0}'.format(filename)
-    return response
+# def riot(request):
+#     filename = "riot.txt"
+#     content = 'df00023e-6d26-4549-836c-ecfd264c7d78'
+#     response = HttpResponse(content, content_type='text/plain')
+#     response['Content-Disposition'] = 'attachment; filename={0}'.format(filename)
+#     return response
 
 def info(request):
     return render(request, 'data/info.html')

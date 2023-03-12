@@ -28,7 +28,6 @@ urlpatterns = [
     path('api/onedeck/windefencerate/',OneDeckAPI_windefencerate.as_view()),
     path('api/onedeck/avgplace/',OneDeckAPI_avgplace.as_view()),
     path('api/doubledeck/',DoubleAPI.as_view()),
-    path('riot.txt/', views.riot),
     path('',views.info )
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
