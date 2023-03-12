@@ -258,7 +258,7 @@ class SummonerSerializer(serializers.ModelSerializer) :
         fields = ('name', 'profileIcon', 'tier', 'LP', 'winrate', 'game_num', 'win', 'lose' )
 
     def getProfileIcon(self,obj):
-        url = f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/profileicon/{obj.profileIconID}.png"
+        url = f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/profileicon/{obj.profileIconID}.png"
         return url
 
 class ChampionSerializer(serializers.ModelSerializer) :
@@ -292,9 +292,9 @@ class ChampionSerializer(serializers.ModelSerializer) :
         i = dict()
         for item in Counter(obj.items).most_common(5):
             if (item[0])[:17] == "TFT8_EmblemItems/":
-                i[itemName[item[0]]["name"]] = f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-item/{(item[0])[17:]}.png"
+                i[itemName[item[0]]["name"]] = f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-item/{(item[0])[17:]}.png"
             else:
-                i[itemName[item[0]]["name"]] = f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-item/{item[0]}.png"
+                i[itemName[item[0]]["name"]] = f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-item/{item[0]}.png"
         f.close()
         return i
     
@@ -308,14 +308,14 @@ class ChampionSerializer(serializers.ModelSerializer) :
         return t
 
     def getbigimg(self, obj):
-        url = f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-champion/{obj.name}.TFT_Set8.png"
+        url = f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-champion/{obj.name}.TFT_Set8.png"
         return url
 
 
     def getsmallimg(self, obj):
         if obj.name == "TFT8_WuKong":
             obj.name = "TFT8_Wukong"
-        url = f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{obj.name}.TFT_Set8.png"
+        url = f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-hero-augment/{obj.name}.TFT_Set8.png"
         return url
 
     def getbgimg(self, obj):
@@ -349,27 +349,27 @@ class OneDeckSerializer(serializers.ModelSerializer) :
         try :
             c0 = augmentName[augs[0]]["image"]["full"]
             aug.append({"name" : augmentName[augs[0]]["name"],
-        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-augment/{c0}"})
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-augment/{c0}"})
         except KeyError:
             c0 = haugmentName[aug[0]]["image"]["full"]
             aug.append({"name" : haugmentName[augs[0]]["name"],
-        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-augment/{c0}"})
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-hero-augment/{c0}"})
         try:
             c1 = augmentName[augs[1]]["image"]["full"]
             aug.append({"name" : augmentName[augs[1]]["name"],
-        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-augment/{c1}"})
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-augment/{c1}"})
         except KeyError:
             c1 = haugmentName[augs[1]]["image"]["full"]
             aug.append({"name" : haugmentName[augs[1]]["name"],
-        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-augment/{c1}"})
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-hero-augment/{c1}"})
         try:
             c2 = haugmentName[obj.H_aug[0]]["image"]["full"]
             aug.append({"name" : haugmentName[obj.H_aug[0]]["name"],
-        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{c2}"})
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-hero-augment/{c2}"})
         except KeyError:
             c2 = augmentName[obj.H_aug[0]]["image"]["full"]
             aug.append({"name" : augmentName[obj.H_aug[0]]["name"],
-        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{c2}"})
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-augment/{c2}"})
         
         return aug
         
@@ -398,7 +398,7 @@ class OneDeckSerializer(serializers.ModelSerializer) :
             temp = {
                 "name" : championName[i]["name"],
                 "cost" : cost,
-                "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{ima}"
+                "img" : f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-hero-augment/{ima}"
             }
 
             units.append(temp)
@@ -422,13 +422,13 @@ class OneDeckSerializer(serializers.ModelSerializer) :
                 ima = itemName[item[0]]["image"]["full"]
                 temp = {
                     "name": itemName[item[0]]["name"],
-                    "img": f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-item/{ima}"
+                    "img": f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-item/{ima}"
                 }
                 items.append(temp)
             ima = championName[i[0]]["image"]["full"]
             temp = {
                 "name" : championName[i[0]]["name"],
-                "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{ima}",
+                "img" : f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-hero-augment/{ima}",
                 "items" : items
             }
             cores.append(temp)
@@ -1078,27 +1078,27 @@ class DoubleDeckSerializer(serializers.ModelSerializer) :
         try :
             c0 = augmentName[augs[0]]["image"]["full"]
             aug.append({"name" : augmentName[augs[0]]["name"],
-        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-augment/{c0}"})
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-augment/{c0}"})
         except KeyError:
             c0 = haugmentName[aug[0]]["image"]["full"]
             aug.append({"name" : haugmentName[augs[0]]["name"],
-        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-augment/{c0}"})
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-hero-augment/{c0}"})
         try:
             c1 = augmentName[augs[1]]["image"]["full"]
             aug.append({"name" : augmentName[augs[1]]["name"],
-        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-augment/{c1}"})
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-augment/{c1}"})
         except KeyError:
             c1 = haugmentName[augs[1]]["image"]["full"]
             aug.append({"name" : haugmentName[augs[1]]["name"],
-        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-augment/{c1}"})
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-hero-augment/{c1}"})
         try:
             c2 = haugmentName[obj.H_aug[0]]["image"]["full"]
             aug.append({"name" : haugmentName[obj.H_aug[0]]["name"],
-        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{c2}"})
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-hero-augment/{c2}"})
         except KeyError:
             c2 = augmentName[obj.H_aug[0]]["image"]["full"]
             aug.append({"name" : augmentName[obj.H_aug[0]]["name"],
-        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{c2}"})
+        "img" : f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-augment/{c2}"})
 
         
         return aug
@@ -1130,7 +1130,7 @@ class DoubleDeckSerializer(serializers.ModelSerializer) :
             temp = {
                 "name" : championName[i]["name"],
                 "cost" : cost,
-                "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{ima}"
+                "img" : f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-hero-augment/{ima}"
             }
             units.append(temp)
         return units
@@ -1153,13 +1153,13 @@ class DoubleDeckSerializer(serializers.ModelSerializer) :
                 ima = itemName[item[0]]["image"]["full"]
                 temp = {
                     "name": itemName[item[0]]["name"],
-                    "img": f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-item/{ima}"
+                    "img": f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-item/{ima}"
                 }
                 items.append(temp)
             ima = championName[i[0]]["image"]["full"]
             temp = {
                 "name" : championName[i[0]]["name"],
-                "img" : f"http://ddragon.leagueoflegends.com/cdn/13.3.1/img/tft-hero-augment/{ima}",
+                "img" : f"http://ddragon.leagueoflegends.com/cdn/13.5.1/img/tft-hero-augment/{ima}",
                 "items" : items
             }
             cores.append(temp)
