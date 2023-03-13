@@ -141,6 +141,8 @@ def match2deck():
             continue
         else :
             #더블업 팀 별로 나누어서 덱 저장
+            if DeckData.objects.filter(matchid = match.matchId):
+                continue 
             group1 = []
             group2 = []
             group3 = []
