@@ -185,6 +185,8 @@ def match2deck():
             DeckData(placement = group3[0].placement, units1 = group3[0].units, coreunits1 = group3[0].core , units2 = group3[1].units, coreunits2 = group3[1].core , augments1 = group3[0].augments, augments2 = group3[1].augments, H_aug1 = group3[0].h_aug, H_aug2 = group3[1].h_aug).save()
             DeckData(placement = group4[0].placement, units1 = group4[0].units, coreunits1 = group4[0].core , units2 = group4[1].units, coreunits2 = group4[1].core , augments1 = group4[0].augments, augments2 = group4[1].augments, H_aug1 = group4[0].h_aug, H_aug2 = group4[1].h_aug).save()
 
+    #저장공간 확보
+    Match.objects.all().delete()
 class Command(BaseCommand):
     help = "Store 'Matchdata' in DB to Use 'Summoner_rank'. 그리고 덱 저장"
     def handle(self, *args, **kwargs):
