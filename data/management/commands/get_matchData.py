@@ -97,7 +97,10 @@ def get_matchData(puuids, API_KEY):
 
         for matchid in ids:
             data = askRiot(f'https://asia.api.riotgames.com/tft/match/v1/matches/{matchid}?api_key={API_KEY}')
-
+            version = data['info']['game_version']
+            if version[:12] != "Version 13.5":
+                print("롤토체스 데이터 업데이트")
+                break
             #더블업 모드만 저장
             if data['info']['tft_game_type'] == 'pairs':
                 m = Match.objects.filter(matchId = matchid)
