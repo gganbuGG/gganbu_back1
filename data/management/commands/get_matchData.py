@@ -97,7 +97,10 @@ def get_matchData(puuids, API_KEY):
 
         for matchid in ids:
             data = askRiot(f'https://asia.api.riotgames.com/tft/match/v1/matches/{matchid}?api_key={API_KEY}')
-
+            version = data['info']['game_version']
+            if version[:12] != "Version 13.5":
+                print("롤토체스 데이터 업데이트")
+                break
             #더블업 모드만 저장
             if data['info']['tft_game_type'] == 'pairs':
                 m = Match.objects.filter(matchId = matchid)
@@ -182,6 +185,8 @@ def match2deck():
             DeckData(placement = group3[0].placement, units1 = group3[0].units, coreunits1 = group3[0].core , units2 = group3[1].units, coreunits2 = group3[1].core , augments1 = group3[0].augments, augments2 = group3[1].augments, H_aug1 = group3[0].h_aug, H_aug2 = group3[1].h_aug).save()
             DeckData(placement = group4[0].placement, units1 = group4[0].units, coreunits1 = group4[0].core , units2 = group4[1].units, coreunits2 = group4[1].core , augments1 = group4[0].augments, augments2 = group4[1].augments, H_aug1 = group4[0].h_aug, H_aug2 = group4[1].h_aug).save()
 
+    #저장공간 확보
+    Match.objects.all().delete()
 class Command(BaseCommand):
     help = "Store 'Matchdata' in DB to Use 'Summoner_rank'. 그리고 덱 저장"
     def handle(self, *args, **kwargs):
