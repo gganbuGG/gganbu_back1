@@ -100,7 +100,8 @@ def get_matchData(puuids, API_KEY):
             version = data['info']['game_version']
             if version[:12] != "Version 13.5" and version[:12] != "Version 13.1":
                 print("롤토체스 데이터 업데이트")
-                break
+                print("데이터 :"+ version)
+                continue
             #더블업 모드만 저장
             if data['info']['tft_game_type'] == 'pairs':
                 m = Match.objects.filter(matchId = matchid)
