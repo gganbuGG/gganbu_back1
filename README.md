@@ -1,5 +1,5 @@
 # 깐부지지
->개발기간 : 2023.01 ~<br><br>
+>개발기간 : 2023.01 ~ 2023.02 <br><br>
 ## 배포주소
 >프론트 서버 : https://wkdrhkdwls.github.io/doubleup/ <br>
 >백엔드 서버 : http://gganbuback1.pythonanywhere.com/<br><br>
